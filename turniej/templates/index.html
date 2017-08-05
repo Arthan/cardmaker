@@ -1,0 +1,110 @@
+{% load new_lines %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Generator</title>
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+</head>
+<body>
+
+
+<div class="container">
+  <div class="row">
+      <div class="col-sm-6">
+          <div id="params" class="jumbotron center">
+            <div class="form-group">
+          
+            <label for="layer">Typ Karty:</label>
+              <select name="layer" id="layer" class="form-control">
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="title">Nazwa Karty:</label>
+              <input name="title" id="title" class="form-control" type="text" value=""/>
+            </div>
+            
+            <div class="form-group">
+              <label for="type">Typ Karty:</label>
+              <input name="type" id="type" class="form-control" type="text" value=""/>
+            </div>
+            
+            <div class="form-group">
+              <label for="level">Numer spotkania:</label>  
+              <input name="level" id="encounter_nr" maxlength="1" class="form-control" type="text" value=""/>
+            </div>
+            
+            <div class="form-group">
+              <label for="text">Treść:</label>  
+              <textarea name="text" id="text" class="form-control"></textarea>
+            </div>
+            
+            <div class="form-group">
+             <input type="checkbox" name="debug-mode" id="debug-mode" value="debug">Debug mode
+            </div>
+            
+            <button id="btn-save">Zapisz</button>
+          </div>          
+
+      </div>
+      <div class="col-sm-6">
+        <button id="btn-front">Przód</button>
+        <button id="btn-back">Tył</button>
+      
+        <div class="flip-container">
+          <div class="flipper">
+  		    <div class="front"><div id="game"></div></div>
+  		    <div class="back"><div id="back"></div></div>
+          </div>
+        </div>
+	  </div>
+        
+      
+   
+  </div>
+</div>
+  
+  <script src="/static/js/jquery-3.2.1.min.js"></script>
+  
+  <script>
+    var talia = '{{ karta.talia.nazwa }}';
+    var card_id = {{karta.old_nr}};
+    $("#title").val('{{ karta.nazwa|title }}');
+    $("#type").val('{{ karta.typ_text|title }}');
+    $("#encounter_nr").val('{{ karta.nr_spotkania }}');
+    $("#text").val('{{ karta.opis|new_lines }}');
+    switch (talia) {
+    case 'przygody':
+      $("#layer").val("0");
+      break;
+    case 'podziemia':
+      $("#layer").val("1");
+      break;
+    case 'czary':
+      $("#layer").val("6");
+      break;
+    case 'ekwipunek':
+      $("#layer").val("3");
+      break;
+    case 'otchlan':
+      $("#layer").val("0");
+      break;
+    case 'talismany':
+      $("#layer").val("0");
+      break;  
+    };
+  </script>
+  
+  
+  <script src="/static/js/phaser.min.js"></script>
+  <script src="/static/js/canvas2image.js"></script>  
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/states/Boot.js"></script>
+  <script src="/static/js/states/Preload.js"></script>
+  <script src="/static/js/states/Game.js"></script>
+  
+  
+</body>
+</html>

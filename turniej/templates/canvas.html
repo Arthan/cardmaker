@@ -1,0 +1,69 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+
+  <style>
+  #div-canvas {
+    border: 1px solid grey;
+    width: 100px;
+    height: 100px;  
+  }
+  
+  #text {
+    height: 100px;
+  }
+  #test {
+    position: absolute;
+    right: -1000;    
+  }
+  </style>
+</head>
+<body>
+  <p id="test">sfd</p>
+  <div class="form-group">
+    <label for="text">Treść:</label>  
+    <textarea name="text" id="text" class="form-control">test</textarea>
+  </div>
+
+<div id="div-canvas">
+<canvas id="canvas" class="canva"></canvas>
+</div>
+
+<script src="/static/js/jquery-3.2.1.min.js"></script>
+<script src="/static/js/html2canvas.min.js"></script>
+
+<script>
+  function toCanvas() {
+    var new_text = $("#text").val();
+    new_text = '<div>'+new_text+'</div>';
+    var obj = $("#test");
+    obj.html(new_text);
+    html2canvas(obj, {
+      "width": 100,
+      "height": 100
+      }).then(function(canvas) {
+      $('#div-canvas').html(canvas);
+      //$('#div-canvas').append(canvas);
+    });
+
+    
+    //new_text = new_text.replace('<>');
+
+  };
+
+
+
+window.onload = function() {
+  toCanvas();
+
+  $('#text').on('input',function(e){
+    toCanvas();
+  });
+  
+};
+</script>
+
+
+</body>
+</html>
