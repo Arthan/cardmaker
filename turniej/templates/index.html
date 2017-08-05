@@ -45,14 +45,15 @@
              <input type="checkbox" name="debug-mode" id="debug-mode" value="debug">Debug mode
             </div>
             
-            <button id="btn-save">Zapisz</button>
+            <button id="btn-save" class="btn btn-primary">Pobierz</button>
           </div>          
 
       </div>
       <div class="col-sm-6">
-        <button id="btn-front">Przód</button>
-        <button id="btn-back">Tył</button>
-      
+        <div id="card-flip-buttons">
+          <button id="btn-front" class="btn btn-primary">Przód</button>
+          <button id="btn-back" class="btn btn-primary">Tył</button>
+        </div>
         <div class="flip-container">
           <div class="flipper">
   		    <div class="front"><div id="game"></div></div>
@@ -67,7 +68,7 @@
 </div>
   
   <script src="/static/js/jquery-3.2.1.min.js"></script>
-  
+
   <script>
     var talia = '{{ karta.talia.nazwa }}';
     var card_id = {{karta.old_nr}};
@@ -75,36 +76,14 @@
     $("#type").val('{{ karta.typ_text|title }}');
     $("#encounter_nr").val('{{ karta.nr_spotkania }}');
     $("#text").val('{{ karta.opis|new_lines }}');
-    switch (talia) {
-    case 'przygody':
-      $("#layer").val("0");
-      break;
-    case 'podziemia':
-      $("#layer").val("1");
-      break;
-    case 'czary':
-      $("#layer").val("6");
-      break;
-    case 'ekwipunek':
-      $("#layer").val("3");
-      break;
-    case 'otchlan':
-      $("#layer").val("0");
-      break;
-    case 'talismany':
-      $("#layer").val("0");
-      break;  
-    };
   </script>
-  
-  
+    
   <script src="/static/js/phaser.min.js"></script>
   <script src="/static/js/canvas2image.js"></script>  
   <script src="/static/js/app.js"></script>
   <script src="/static/js/states/Boot.js"></script>
   <script src="/static/js/states/Preload.js"></script>
   <script src="/static/js/states/Game.js"></script>
-  
-  
+
 </body>
 </html>

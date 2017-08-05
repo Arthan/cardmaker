@@ -80,8 +80,7 @@ window.onload = function() {
   // wypelnianie listy z szablonami
   for (i in layouts_names) {
     $('#layer').append('<option value="'+i+'" style="background-image:url(/static/img/templates/'+layouts[i]+'_icon.png);">'+layouts_names[i]+'</option>');
-  }
-  
+  }  
 
   game = new Phaser.Game(490, 750, Phaser.CANVAS, 'game', window.devicePixelRatio);
   
@@ -130,5 +129,27 @@ window.onload = function() {
   $("#btn-back").click(function(){
     $(".flip-container").addClass('flip');
   });
+
+
+  switch (talia) {
+  case 'przygody':
+    $("#layer").val("0");
+    break;
+  case 'podziemia':
+    $("#layer").val("1");
+    break;
+  case 'czary':
+    $("#layer").val("6");
+    break;
+  case 'ekwipunek':
+    $("#layer").val("3");
+    break;
+  case 'otchlan':
+    $("#layer").val("0");
+    break;
+  case 'talismany':
+    $("#layer").val("0");
+    break;  
+  };
 
 };

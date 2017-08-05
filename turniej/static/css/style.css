@@ -40,7 +40,12 @@
 }
 
 body {
-  background-image: url("/static/img/background.jpg");
+  padding: 20px;
+  background-image: url("/static/img/mim_01.jpg");
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .form-group {
@@ -52,9 +57,13 @@ body {
   //background: grey; 
 } 
 
+#text {
+  height: 100px;
+}
+
 #params {
   color: white;
-  background-color: rgba(150, 150, 150, 0.5);;
+  background-color: rgba(150, 150, 150, 0.75);
   border-radius: 10px; 
 } 
 
@@ -127,4 +136,13 @@ body {
   height: 26px;
   padding-left: 24px;
   padding-top: 2px;
+}
+
+#btn-front, #btn-back {
+  width: 70px;
+  margin: 10px;
+}
+
+#card-flip-buttons {
+  text-align: center;
 }
