@@ -76,7 +76,49 @@ function refreshEncounterNr() {
   game.CalcFontSize(game.txtEncounter, game.encounter_region, game.encounter_font_size_max);
 };
 
+var img = document.getElementById("blah");
+img.addEventListener('load', function() {
+  //bmd.ctx.beginPath();
+  //bmd.ctx.rect(0,0,128,128);
+  //bmd.ctx.fillStyle = '#ff0000';
+  //bmd.ctx.fill();
+  
+  var img = document.getElementById("blah");
+  game.picture.width = img.width;
+  game.picture.height = img.height;
+  
+  var bmd = game.add.bitmapData(img.width, img.height);
+  bmd.ctx.drawImage(img, 0, 0);
+  game.picture.loadTexture(bmd);
+  
+  game.picture.width = img.width;
+  game.picture.height = img.height;
+  var ratio = game.picture_region.width / img.width;
+  game.picture.scale.setTo(ratio);
+  
+}, false);
+
+function readImage(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      
+      $('#blah')
+          .attr('src', e.target.result);
+      
+      
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+};
+
 window.onload = function() {
+  // wczytywanie czcionek
+  document.fonts.load('10pt "Windlass Extended"');//.then(renderText);;
+  document.fonts.load('10pt "Caxton Extended"');
+
   // wypelnianie listy z szablonami
   for (i in layouts_names) {
     $('#layer').append('<option value="'+i+'" style="background-image:url(/static/img/templates/'+layouts[i]+'_icon.png);">'+layouts_names[i]+'</option>');
@@ -148,7 +190,7 @@ window.onload = function() {
     $("#layer").val("0");
     break;
   case 'talismany':
-    $("#layer").val("0");
+    $("#layer").val("23");
     break;  
   };
 

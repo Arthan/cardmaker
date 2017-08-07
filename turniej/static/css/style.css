@@ -91,6 +91,7 @@ body {
   width: 490px;
   height: 750px;
   background-size: cover;
+  background-color: black;
 }
 
 
@@ -128,7 +129,7 @@ body {
 #layer {
   padding-left: 24px;
   background-repeat: no-repeat;
-   background-position: 0px 4px;
+  background-position: 0px 4px;
 }
 
 #layer option {
@@ -145,4 +146,8 @@ body {
 
 #card-flip-buttons {
   text-align: center;
+}
+
+#blah {
+  display: none;
 }

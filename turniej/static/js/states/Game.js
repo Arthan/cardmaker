@@ -28,6 +28,7 @@ class Game {
   
       
     };
+    //txtText.setShadow(3, 3, 'rgba(255,255,255,1.0)', 5);
     
     return txtText; 
   }
@@ -60,10 +61,16 @@ class Game {
     //this.picture.scale.setTo(0.7);
 
 
-    this.picture = this.add.sprite(41, 112, 'picture');
-    this.picture.scale.setTo(1.017);
+    game.picture = this.add.sprite(41, 112, 'picture');
+    game.picture.inputEnabled = true;
+    game.picture.input.enableDrag(true);
+    var generic_picture_rec = [40, 120, 405, 350];
+    game.picture_region = this.CreateRegion(generic_picture_rec);
+    var ratio = game.picture_region.width / game.picture.width;
+    //game.picture.width = game.picture.width * ratio;
+    //game.picture.height = game.picture.height * ratio;
+    game.picture.scale.setTo(ratio);
 
-    
     var graphics = game.add.graphics(0, 0);
     //graphics.lineStyle(2, 0x0000FF, 1);
     graphics.beginFill(0xFFFFFF);
@@ -90,8 +97,7 @@ class Game {
     var generic_type_region = [134, 436, 215, 28];
     game.type_font_size_max = 26;
     game.type_region = this.CreateRegion(generic_type_region);
-    game.txtType = this.TextBox(game.type_region, '', game.font_caxton, game.type_font_size_max);    
-
+    game.txtType = this.TextBox(game.type_region, '', game.font_caxton, game.type_font_size_max);
     
     var generic_encounter_number_region = [390, 651, 40, 40];
     game.encounter_font_size_max = 40;
@@ -143,7 +149,7 @@ class Game {
       game.debug.geom( game.type_region, color );
       game.debug.geom( game.encounter_region, color );
       game.debug.geom( game.text_region, color );
-      
+      game.debug.geom( game.picture_region, color );
     };
   }
 }
