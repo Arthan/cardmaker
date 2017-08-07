@@ -64,8 +64,9 @@ class Game {
     game.picture = this.add.sprite(41, 112, 'picture');
     game.picture.inputEnabled = true;
     game.picture.input.enableDrag(true);
-    var generic_picture_rec = [40, 120, 405, 350];
-    game.picture_region = this.CreateRegion(generic_picture_rec);
+    game.generic_picture_rec = [40, 120, 405, 350];
+    game.generic_picture_rec_b = [40, 120, 405, 240];
+    game.picture_region = this.CreateRegion(game.generic_picture_rec);
     var ratio = game.picture_region.width / game.picture.width;
     //game.picture.width = game.picture.width * ratio;
     //game.picture.height = game.picture.height * ratio;
@@ -89,24 +90,26 @@ class Game {
     game.font_windlass = "Windlass Extended";
     game.font_caxton = "Caxton Extended";
     
-    var generic_title_rec = [76, 64, 338, 54];
+    game.generic_title_rec = [76, 64, 338, 54];
     game.title_font_size_max = 40;
-    game.title_region = this.CreateRegion(generic_title_rec);
+    game.title_region = this.CreateRegion(game.generic_title_rec);
     game.txtTitle = this.TextBox(game.title_region, '', game.font_windlass, game.title_font_size_max);
     
-    var generic_type_region = [134, 436, 215, 28];
+    game.generic_type_region = [134, 436, 215, 28];
+    game.generic_type_region_b = [134, 320, 215, 28];
     game.type_font_size_max = 26;
-    game.type_region = this.CreateRegion(generic_type_region);
+    game.type_region = this.CreateRegion(game.generic_type_region);
     game.txtType = this.TextBox(game.type_region, '', game.font_caxton, game.type_font_size_max);
     
-    var generic_encounter_number_region = [390, 651, 40, 40];
+    game.generic_encounter_number_region = [390, 651, 40, 40];
     game.encounter_font_size_max = 40;
-    game.encounter_region = this.CreateRegion(generic_encounter_number_region);
+    game.encounter_region = this.CreateRegion(game.generic_encounter_number_region);
     game.txtEncounter = this.TextBox(game.encounter_region, '1', game.font_caxton, game.encounter_font_size_max);    
     game.txtEncounter.fill = "white";
     
-    var generic_text_region = [45, 480, 394, 202];
-    game.text_region = this.CreateRegion(generic_text_region);
+    game.generic_text_region = [45, 480, 394, 202];
+    game.generic_text_region_b = [45, 370, 394, 312];
+    game.text_region = this.CreateRegion(game.generic_text_region);
     game.text_font_size_max = 29;
     game.txtText = this.TextBox(game.text_region, 
       'Znalazłeś Kufel piwa zjazdowego. Możesz odebrać na niego kupon u organizatora, a z kuponem udaj się do baru kiedy chcesz podczas zjazdu.', game.font_caxton, game.text_font_size_max, true);    

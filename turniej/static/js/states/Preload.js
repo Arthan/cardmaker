@@ -21,7 +21,7 @@ class Preload {
     for (var i in layouts) {
       var layout = layouts[i];
       this.load.image(layout+'-front-a', '/static/img/templates/'+layout+'_a.png');    
-      //this.load.image(layout+'-front-b', 'assets/images/'+layout+'-front-b.png');
+      this.load.image(layout+'-front-b', '/static/img/templates/'+layout+'_b.png');    
       //this.load.image(layout+'-jewel', 'assets/images/'+layout+'-jewel.png');    
     };
     this.load.image('adventure-front-b', '/static/img/templates/adventure_b.png');    

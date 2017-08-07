@@ -16,6 +16,7 @@ var small_layouts = ['bridge', 'city', 'denizen', 'remnant', 'harbinger', 'nethe
   'destiny_l', 'destiny_d', 'talisman', 'wanted', 'woodland', 'ifrit', 'ifrit_r'];
 var no_encounter = small_layouts.concat(['spell', 'wampiry', 'quest_reward', 'warlock']);
 var no_type = ['quest_reward', 'warlock', 'denizen', 'path'];
+var layout_type = 'a';
 
 function refreshCard() { 
   refreshLayout();
@@ -29,7 +30,7 @@ function refreshCard() {
 function refreshLayout() {
   var layout = layouts[parseInt($("#layer").val())];
   $("#layer").css('background-image', 'url(/static/img/templates/'+layout+'_icon.png)');
-  game.card.loadTexture(layout+'-front-a');
+  game.card.loadTexture(layout+'-front-'+layout_type);
   if (['ifrit', 'ifrit_r'].indexOf(layout) > -1) {
     $("#back").css('background-image', 'url(/static/img/templates/'+layouts[0]+'_back.png)'); 
   } else {
@@ -59,13 +60,42 @@ function refreshType() {
   game.CalcFontSize(game.txtType, game.type_region, game.type_font_size_max);
 };
 
+function assignRecToRegion(rec, region) {
+  region.x = rec[0];
+  region.y = rec[1];
+  region.width = rec[2];
+  region.height = rec[3];
+}
+
 function refreshText() {
   var new_text = $("#text").val();
   game.txtText.setText(new_text);
-  if (game.txtText.height > game.text_region.height) {
-  
-  } else {
-  
+  if ((game.txtText.height > game.generic_text_region[3])&&(layout_type == 'a')) {
+    layout_type = 'b';
+    assignRecToRegion(game.generic_picture_rec_b, game.picture_region);  
+
+    assignRecToRegion(game.generic_type_region_b, game.type_region);
+    game.txtType.x = Math.floor(game.type_region.x + game.type_region.width / 2);
+    game.txtType.y = Math.floor(game.type_region.y + game.type_region.height / 2);
+
+    assignRecToRegion(game.generic_text_region_b, game.text_region);
+    game.txtText.x = Math.floor(game.text_region.x + game.text_region.width / 2);
+    game.txtText.y = game.text_region.y;
+    
+    refreshLayout();
+  } else if ((game.txtText.height <= game.generic_text_region[3])&&(layout_type == 'b')) {
+    layout_type = 'a';
+    assignRecToRegion(game.generic_picture_rec, game.picture_region);
+
+    assignRecToRegion(game.generic_type_region, game.type_region);
+    game.txtType.x = Math.floor(game.type_region.x + game.type_region.width / 2);
+    game.txtType.y = Math.floor(game.type_region.y + game.type_region.height / 2);
+
+    assignRecToRegion(game.generic_text_region, game.text_region);
+    game.txtText.x = Math.floor(game.text_region.x + game.text_region.width / 2);
+    game.txtText.y = game.text_region.y;
+    
+    refreshLayout();
   };
   //game.CalcFontSize(game.txtText, game.text_region, game.text_font_size_max);
 };
@@ -103,11 +133,7 @@ function readImage(input) {
     var reader = new FileReader();
 
     reader.onload = function (e) {
-      
-      $('#blah')
-          .attr('src', e.target.result);
-      
-      
+      $('#blah').attr('src', e.target.result);      
     };
 
     reader.readAsDataURL(input.files[0]);
@@ -172,6 +198,31 @@ window.onload = function() {
     $(".flip-container").addClass('flip');
   });
 
+  $("#btn-expand").click(function(){
+    game.picture.scale.x += 0.1;
+    game.picture.scale.y += 0.1;
+  });
+
+  $("#btn-collapse").click(function(){
+    game.picture.scale.x -= 0.1;
+    game.picture.scale.y -= 0.1;
+  });
+
+  $("#btn-move-up").click(function(){
+    game.picture.y -= 10;
+  });
+
+  $("#btn-move-down").click(function(){
+    game.picture.y += 10;
+  });
+
+  $("#btn-move-left").click(function(){
+    game.picture.x -= 10;
+  });
+
+  $("#btn-move-right").click(function(){
+    game.picture.x += 10;
+  });
 
   switch (talia) {
   case 'przygody':
