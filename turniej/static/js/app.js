@@ -199,13 +199,13 @@ window.onload = function() {
   });
 
   $("#btn-expand").click(function(){
-    game.picture.scale.x += 0.1;
-    game.picture.scale.y += 0.1;
+    game.picture.scale.x += 0.02;
+    game.picture.scale.y += 0.02;
   });
 
   $("#btn-collapse").click(function(){
-    game.picture.scale.x -= 0.1;
-    game.picture.scale.y -= 0.1;
+    game.picture.scale.x -= 0.02;
+    game.picture.scale.y -= 0.02;
   });
 
   $("#btn-move-up").click(function(){
