@@ -1,22 +1,15 @@
 var game;
-var layouts = [
-  'adventure', 'dungeon', 'highland', 'purchase', 'relic', 'treasure', 
-  'spell', 'dragon1', 'dragon2', 'dragon3', 'quest_reward', 'warlock',
-  'wampiry', 
-  'bridge', 'city', 'denizen', 'remnant', 'harbinger', 'nether', 'path', 'tunnel', 
-  'destiny_l', 'destiny_d', 'talisman', 'wanted', 'woodland', 'ifrit', 'ifrit_r'];
-var layouts_names = [
-  'Przygody', 'Podziemi', 'Gór', 'Ekwipunku', 'Reliktu', 'Skarbu', 
-  'Zaklęcia', 'Smoka - Grillipus', 'Smoka - Cadorus', 'Smoka - Varthrax', 'Nagrody', 'Zadanie Czarownika',
-  'Wampira', 
-  'Mostu', 'Miasta', 'Mieszkańca', 'Pozostałości', 'Proroka', 'Nieszczęścia', 'Ścieżki', 'Tunelu',
-  'Przeznaczenia (jasna)', 'Przeznaczenia (ciemna)', 'Talizmanu', 'List Gończy', 'Lasu', 'Ifrytów', 'Ifrytów (elitarnych)'];
-
-var small_layouts = ['bridge', 'city', 'denizen', 'remnant', 'harbinger', 'nether', 'path', 'tunnel', 
-  'destiny_l', 'destiny_d', 'talisman', 'wanted', 'woodland', 'ifrit', 'ifrit_r'];
-var no_encounter = small_layouts.concat(['spell', 'wampiry', 'quest_reward', 'warlock']);
-var no_type = ['quest_reward', 'warlock', 'denizen', 'path'];
 var layout_type = 'a';
+var curr_layout = null;
+
+function setLayout(name) {
+  for (var i in layouts) {
+    if (layouts[i].name == name) {
+      $("#layer").val(i);
+      break;
+    }
+  }
+}
 
 function refreshCard() { 
   refreshLayout();
@@ -28,23 +21,28 @@ function refreshCard() {
 };
     
 function refreshLayout() {
-  var layout = layouts[parseInt($("#layer").val())];
-  $("#layer").css('background-image', 'url(/static/img/templates/'+layout+'_icon.png)');
-  game.card.loadTexture(layout+'-front-'+layout_type);
-  if (['ifrit', 'ifrit_r'].indexOf(layout) > -1) {
-    $("#back").css('background-image', 'url(/static/img/templates/'+layouts[0]+'_back.png)'); 
+  curr_layout = layouts[parseInt($("#layer").val())];
+  $("#layer").css('background-image', 'url(/static/img/templates/'+curr_layout.name+'_icon.png)');
+  
+  if (curr_layout.long_txt) {
+    game.card.loadTexture(curr_layout.name+'-front-'+layout_type);
   } else {
-    $("#back").css('background-image', 'url(/static/img/templates/'+layout+'_back.png)');
+    game.card.loadTexture(curr_layout.name+'-front-a');
   }
   
-  
-  game.txtEncounter.visible = (no_encounter.indexOf(layout) == -1);
-  game.txtType.visible = (no_type.indexOf(layout) == -1);
- 
-  if (small_layouts.indexOf(layout) > -1) {
-    game.card.scale.setTo(2.0);
+  if (['ifrit', 'ifrit_r'].indexOf(curr_layout.name) > -1) {
+    $("#back").css('background-image', 'url(/static/img/templates/adventure_back.png)'); 
   } else {
+    $("#back").css('background-image', 'url(/static/img/templates/'+curr_layout.name+'_back.png)');
+  }
+  
+  game.txtEncounter.visible = (curr_layout.en_nr);
+  game.txtType.visible = (curr_layout.type_txt);
+ 
+  if (curr_layout.dpi300) {
     game.card.scale.setTo(1.0);
+  } else {
+    game.card.scale.setTo(2.0);
   };
 };
 
@@ -146,12 +144,12 @@ window.onload = function() {
   document.fonts.load('10pt "Caxton Extended"');
 
   // wypelnianie listy z szablonami
-  for (i in layouts_names) {
-    $('#layer').append('<option value="'+i+'" style="background-image:url(/static/img/templates/'+layouts[i]+'_icon.png);">'+layouts_names[i]+'</option>');
+  for (i in layouts) {
+    $('#layer').append('<option value="'+i+'" style="background-image:url(/static/img/templates/' +
+      layouts[i].name + '_icon.png);">' + layouts[i].caption + '</option>');
   }  
 
   game = new Phaser.Game(490, 750, Phaser.CANVAS, 'game', window.devicePixelRatio);
-  
   game.state.add('boot', Boot);
   game.state.add('preload', Preload);
   game.state.add('game', Game);
@@ -226,22 +224,22 @@ window.onload = function() {
 
   switch (talia) {
   case 'przygody':
-    $("#layer").val("0");
+    setLayout('adventure');
     break;
   case 'podziemia':
-    $("#layer").val("1");
+    setLayout('dungeon');
     break;
   case 'czary':
-    $("#layer").val("6");
+    setLayout('spell');
     break;
   case 'ekwipunek':
-    $("#layer").val("3");
+    setLayout('purchase');
     break;
   case 'otchlan':
-    $("#layer").val("0");
+    setLayout('adventure');
     break;
   case 'talismany':
-    $("#layer").val("23");
+    setLayout('talisman');
     break;  
   };
 

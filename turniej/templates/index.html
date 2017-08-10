@@ -91,10 +91,15 @@
     $("#type").val('{{ karta.typ_text|title }}');
     $("#encounter_nr").val('{{ karta.nr_spotkania }}');
     $("#text").val('{{ karta.opis|new_lines }}');
+    
+    var layouts = {{ layouts|safe }};
   </script>
     
   <script src="/static/js/phaser.min.js"></script>
   <script src="/static/js/canvas2image.js"></script>  
+  
+  <!--script src="/static/js/card_types.js"></script-->
+  
   <script src="/static/js/app.js"></script>
   <script src="/static/js/states/Boot.js"></script>
   <script src="/static/js/states/Preload.js"></script>

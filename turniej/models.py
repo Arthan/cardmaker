@@ -34,3 +34,16 @@ class Karta(models.Model):
     
     def __unicode__(self):
         return self.nazwa
+
+class Layout(models.Model):
+    name = models.CharField(max_length=50)
+    caption = models.CharField(max_length=50)
+    dpi300 = models.BooleanField(default=True)
+    long_text = models.BooleanField(default=True)
+    encounter_nr = models.BooleanField(default=True)
+    type_text = models.BooleanField(default=True)
+    class Meta:
+        ordering = ['name']
+    def __unicode__(self):
+        return self.name
+    

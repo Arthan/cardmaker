@@ -82,7 +82,7 @@ class Game {
     graphics.drawRect(this.game.width-33, 30, this.game.width, this.game.height-60);
     graphics.endFill();
     
-    game.card = this.add.sprite(this.game.width/2, this.game.height/2, 'adventure-front-a');
+    game.card = this.add.sprite(this.game.width/2, this.game.height/2, layouts[0].name+'-front-a');
     game.card.anchor.set(0.5, 0.5);
     
     //game.card.scale.setTo(0.5);
@@ -111,18 +111,7 @@ class Game {
     game.generic_text_region_b = [45, 370, 394, 312];
     game.text_region = this.CreateRegion(game.generic_text_region);
     game.text_font_size_max = 29;
-    game.txtText = this.TextBox(game.text_region, 
-      'Znalazłeś Kufel piwa zjazdowego. Możesz odebrać na niego kupon u organizatora, a z kuponem udaj się do baru kiedy chcesz podczas zjazdu.', game.font_caxton, game.text_font_size_max, true);    
-    /*
-    game.txtText = this.TextBox(game.text_region, 
-      'Znalazłeś Kufel piwa\n'+
-      'zjazdowego. Możesz odebrać\n'+
-      'na niego kupon u\n'+
-      'organizatora, a z kuponem\n'+
-      'udaj się do baru kiedy chcesz\n'+
-      'podczas zjazdu.',
-      "Caxton Extended", 46);    
-    */
+    game.txtText = this.TextBox(game.text_region, '', game.font_caxton, game.text_font_size_max, true);    
     game.txtText.lineSpacing = -10;
     game.txtText.align = 'center';
     
@@ -152,7 +141,7 @@ class Game {
       game.debug.geom( game.type_region, color );
       game.debug.geom( game.encounter_region, color );
       game.debug.geom( game.text_region, color );
-      game.debug.geom( game.picture_region, color );
+      //game.debug.geom( game.picture_region, color );
     };
   }
 }
