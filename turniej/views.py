@@ -34,3 +34,32 @@ def canvas(request):
     data['karta'] = db_karta
     return render_to_response('canvas.html', data)
 
+def generator(request, game_name, card_id=''):
+    data = {}
+    db_game = Game.objects.get(nazwa=game_name)
+    data['game'] = db_game
+    
+    if card_id != '':
+      db_card = KartaNowa.objects.get(id=card_id)
+      data['karta'] = db_card
+    else:
+      data['karta'] = None 
+    
+    layouts = []
+    db_layouts = Layout.objects.filter(element__game__nazwa=game_name).order_by('caption')
+    for db_layout in db_layouts:
+        layout = {
+          'name': db_layout.name,
+          'caption': db_layout.caption,
+          'en_nr': db_layout.encounter_nr,
+          'type_txt': db_layout.type_text,
+          'dpi300': db_layout.dpi300,
+          'long_txt': db_layout.long_text,
+          'w': db_layout.element.width,
+          'h': db_layout.element.height,
+          'radius': db_layout.element.border_radius,
+        }
+        layouts.append(json.dumps(layout))
+    data['layouts'] = layouts
+ 
+    return render_to_response('generator.html', data)

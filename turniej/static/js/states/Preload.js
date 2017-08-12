@@ -26,11 +26,18 @@ class Preload {
       }
       //this.load.image(layout+'-jewel', 'assets/images/'+layout+'-jewel.png');    
     };
-    this.load.image('adventure-front-b', '/static/img/templates/adventure_b.png');    
-      
+    //this.load.image('adventure-front-b', '/static/img/templates/adventure_b.png');    
+    this.load.image('icon-star', '/static/img/text-icons/ending-star.png');    
+  
     
     //this.load.image('picture', 'assets/images/fantasy-illustration-goblins.jpg');
-    this.load.image('picture', '/static/img/old_1/'+talia+'/'+card_id+'.png');
+    //this.load.image('picture', '/static/img/old_1/'+talia+'/'+card_id+'.png');
+    if (picture == '') {
+      this.load.image('picture', '/static/img/dot.png');
+    } else {
+      this.load.image('picture', '/static/cards/'+picture);    
+    }
+    
         
     this.load.start();
     

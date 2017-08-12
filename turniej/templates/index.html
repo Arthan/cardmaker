@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <title>Generator</title>
   <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui.min.css">
   <link rel="stylesheet" type="text/css" href="/static/css/style.css">
 </head>
 <body>
@@ -83,6 +84,8 @@
 </div>
   
   <script src="/static/js/jquery-3.2.1.min.js"></script>
+  <script src="/static/js/jquery-ui.min.js"></script>
+  
 
   <script>
     var talia = '{{ karta.talia.nazwa }}';
@@ -93,6 +96,17 @@
     $("#text").val('{{ karta.opis|new_lines }}');
     
     var layouts = {{ layouts|safe }};
+    var defaultTypes = [
+      "Zdarzenie",
+      "Przedmiot",
+      "Magiczny Przedmiot",
+      "Nieznajomy"
+    ];
+    
+    $( "#type" ).autocomplete({
+      source: defaultTypes,
+      close: function( event, ui ) { refreshType(); }
+    });
   </script>
     
   <script src="/static/js/phaser.min.js"></script>

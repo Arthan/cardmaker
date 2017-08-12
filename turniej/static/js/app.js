@@ -2,6 +2,113 @@ var game;
 var layout_type = 'a';
 var curr_layout = null;
 
+var symbols = [{'x': 0, 'y': 0, 'type': 'star'}];
+
+var myText = function(game, x, y, text, style){
+  Phaser.Text.call(this, game, x, y, text, style);
+  
+  this.game.add.existing(this);
+  
+  this.fontStyles = [];
+  this.fontWeights = [];
+  this.fontSizes = [];
+};
+
+myText.prototype = Object.create(Phaser.Text.prototype);
+myText.prototype.constructor = myText;
+
+Phaser.Text.prototype.addFontStyle = function(style, position){
+  this.fontStyles[position] = style;
+  this.dirty = true;
+  
+  return this;
+};
+
+Phaser.Text.prototype.addFontSize = function(size, position){
+  this.fontSizes[position] = size;
+  this.dirty = true;
+  
+  return this;
+};
+
+Phaser.Text.prototype.addFontWeight = function(weight, position){
+  this.fontWeights[position] = weight;
+  this.dirty = true;
+  
+  return this;
+};
+
+Phaser.Text.prototype.updateLine = function (line, x, y) {
+  if (line.substr(0, 4) == '<br>' ) {
+    //this.context.textBaseline="bottom";
+    y = y - 16; 
+    line = '______________________';
+  } else {
+    //this.context.textBaseline="alphabetic"; 
+  }
+  
+  if (line.indexOf('@') > -1 ) {
+    //alert('go');
+    //game.symbol.x = x + line.indexOf('@') * 10 - 100;
+    //game.symbol.y = y - 20;
+    //symbols[0].x = x;
+    //symbols[0].y = y;
+    //alert(symbols[0].x);
+    //alert(symbols[0].y);
+  }
+  
+  for (var i = 0; i < line.length; i++)
+    {
+        var letter = line[i];
+      
+        var components = this.fontToComponents(this.context.font);
+        
+        if(this.fontWeights[this._charCount]){
+          components.fontWeight = this.fontWeights[this._charCount];
+        }
+        if(this.fontStyles[this._charCount]){
+          components.fontStyle = this.fontStyles[this._charCount];
+        }
+        if(this.fontSizes[this._charCount]){
+          components.fontSize = this.fontSizes[this._charCount];
+        }
+      
+        this.context.font = this.componentsToFont(components);
+      
+        if (this.style.stroke && this.style.strokeThickness)
+        {
+            if (this.strokeColors[this._charCount])
+            {
+                this.context.strokeStyle = this.strokeColors[this._charCount];
+            }
+
+            this.updateShadow(this.style.shadowStroke);
+            this.context.strokeText(letter, x, y);
+        }
+
+        if (this.style.fill)
+        {
+            if (this.colors[this._charCount])
+            {
+                this.context.fillStyle = this.colors[this._charCount];
+            }
+
+            this.updateShadow(this.style.shadowFill);
+            this.context.fillText(letter, x, y);
+            if (line.indexOf('@') > -1 ) {
+              game.symbol.x = x;
+              game.symbol.y = y + game.txtText.y;
+            }
+    
+        }
+
+        x += this.context.measureText(letter).width;
+
+        this._charCount++;
+    }
+};
+
+
 function setLayout(name) {
   for (var i in layouts) {
     if (layouts[i].name == name) {
@@ -22,6 +129,17 @@ function refreshCard() {
     
 function refreshLayout() {
   curr_layout = layouts[parseInt($("#layer").val())];
+  game.scale.setGameSize(curr_layout.w, curr_layout.h);
+  game.card.x = game.width/2;
+  game.card.y = game.height/2;
+  
+  $('#back').css('border-radius', curr_layout.radius+'px');
+  $('#game canvas').css('border-radius', curr_layout.radius+'px');
+  
+  game.graphics.visible = (curr_layout.h > curr_layout.w);
+  
+  $("#back").css({'width': curr_layout.w+'px', 'height': curr_layout.h+'px'})
+  
   $("#layer").css('background-image', 'url(/static/img/templates/'+curr_layout.name+'_icon.png)');
   
   if (curr_layout.long_txt) {
@@ -104,6 +222,18 @@ function refreshEncounterNr() {
   game.CalcFontSize(game.txtEncounter, game.encounter_region, game.encounter_font_size_max);
 };
 
+
+var blackWhite = function(r, g, b, a) {
+  var avg = 0.3  * r + 0.59 * g + 0.11 * b;
+  return [avg, avg, avg, 255];
+}
+
+var sepia = function(r, g, b, a) {
+  var avg = 0.3  * r + 0.59 * g + 0.11 * b;
+  return [avg + 100, avg + 50, avg + 0, 255]; // 100, 50, 0
+}
+
+
 var img = document.getElementById("blah");
 img.addEventListener('load', function() {
   //bmd.ctx.beginPath();
@@ -117,6 +247,27 @@ img.addEventListener('load', function() {
   
   var bmd = game.add.bitmapData(img.width, img.height);
   bmd.ctx.drawImage(img, 0, 0);
+  
+  var img_data = bmd.ctx.getImageData(0, 0, img.width, img.height);
+  var newpx = img_data.data;
+  var res = [];
+  var len = newpx.length;
+  
+  for (var i = 0; i < len; i += 4) {
+   res = [newpx[i], newpx[i+1], newpx[i+2], newpx[i+3]];
+   res = sepia(res[0], res[1], res[2], res[3]);
+   //res[0] = 255;
+   //res[1] = 255;
+   //res[2] = 255;
+   //res[3] = 255;
+   
+   newpx[i]   = res[0]; // r
+   newpx[i+1] = res[1]; // g
+   newpx[i+2] = res[2]; // b
+   newpx[i+3] = res[3]; // a
+  }
+  bmd.ctx.putImageData(img_data, 0, 0);
+  
   game.picture.loadTexture(bmd);
   
   game.picture.width = img.width;
@@ -180,7 +331,7 @@ window.onload = function() {
     //var dataURL = game.canvas.toDataURL();
     //var image = game.canvas.toDataURL("image/png");
     //window.location.href = image;
-    Canvas2Image.saveAsPNG(game.canvas, 490, 750, "card");
+    Canvas2Image.saveAsPNG(game.canvas, curr_layout.w, curr_layout.h, "card");
   });
 
   $("#debug-mode").click(function(){
@@ -222,7 +373,7 @@ window.onload = function() {
     game.picture.x += 10;
   });
 
-  switch (talia) {
+  /*switch (talia) {
   case 'przygody':
     setLayout('adventure');
     break;
@@ -241,6 +392,6 @@ window.onload = function() {
   case 'talismany':
     setLayout('talisman');
     break;  
-  };
+  };*/
 
 };

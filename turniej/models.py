@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+import uuid
 
 from django.db import models
 
@@ -35,7 +36,10 @@ class Karta(models.Model):
     def __unicode__(self):
         return self.nazwa
 
+
+
 class Layout(models.Model):
+    element = models.ForeignKey('Element')
     name = models.CharField(max_length=50)
     caption = models.CharField(max_length=50)
     dpi300 = models.BooleanField(default=True)
@@ -47,3 +51,32 @@ class Layout(models.Model):
     def __unicode__(self):
         return self.name
     
+class KartaNowa(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    layout = models.ForeignKey('Layout')
+    nazwa = models.CharField(max_length=50)
+    typ = models.CharField(max_length=50)
+    nr_spotkania = models.CharField(max_length=1)
+    opis = models.TextField()
+    picture = models.CharField(max_length=250)
+    pic_x = models.IntegerField()
+    pic_y = models.IntegerField()
+    pic_scale = models.FloatField()
+    
+    def __unicode__(self):
+        return self.nazwa
+
+class Game(models.Model):
+    nazwa = models.CharField(max_length=50)
+    
+    def __unicode__(self):
+        return self.nazwa
+
+class Element(models.Model):
+    game = models.ForeignKey('Game')
+    nazwa = models.CharField(max_length=50)
+    width = models.IntegerField()
+    height = models.IntegerField()
+    border_radius  = models.IntegerField()
+    def __unicode__(self):
+        return u'{} - {}'.format(self.game.nazwa, self.nazwa)
