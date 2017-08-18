@@ -17,8 +17,10 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.generator, name='index'),
+    url(r'^(?P<card_id>[a-f0-9\-]{36})/$', views.generator, name='index'),
     url(r'^canvas$', views.canvas, name='canvas'),
+    url(r'^images$', views.image_list, name='image_list'),
     url(r'^(?P<game_name>\w+)/$', views.generator, name='generator'),
     url(r'^(?P<game_name>\w+)/(?P<card_id>[a-f0-9\-]{36})/$', views.generator, name='generator'),
 ]

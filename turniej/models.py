@@ -46,6 +46,9 @@ class Layout(models.Model):
     long_text = models.BooleanField(default=True)
     encounter_nr = models.BooleanField(default=True)
     type_text = models.BooleanField(default=True)
+    official = models.BooleanField(default=True)
+    on_reverse_list = models.BooleanField(default=True)
+    on_layout_list = models.BooleanField(default=True)
     class Meta:
         ordering = ['name']
     def __unicode__(self):

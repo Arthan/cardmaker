@@ -1,0 +1,143 @@
+{% load new_lines %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Generator</title>
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+</head>
+<body>
+
+
+<div class="container">
+  <div class="row">
+      <div class="col-sm-6">
+          <div id="params" class="jumbotron center">
+            <div class="form-group">
+          
+            <label for="layer">Typ Karty:</label>
+              <select name="layer" id="layer" class="form-control" >
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="title">Nazwa Karty:</label>
+              <input name="title" id="title" class="form-control" type="text" value=""/>
+            </div>
+            
+            <div class="form-group">
+              <label for="type">Typ Karty:</label>
+              <input name="type" id="type" class="form-control" type="text" value="">              
+            </div>
+            
+            <div class="form-group">
+              <label for="level">Numer spotkania:</label>  
+              <input name="level" id="encounter_nr" maxlength="1" class="form-control" type="text" value=""/>
+            </div>
+            
+            <div class="form-group">
+              <label for="text">Treść:</label>  
+              <textarea name="text" id="text" class="form-control"></textarea>
+            </div>
+       
+            <div class="form-group">
+              <label for="image">Grafika:</label>  
+              <input type="file" name="image" id="image" class="form-control" onchange="readImage(this);">
+              <img id="blah" src="#"/>
+            </div>
+            
+            <div class="form-group">
+              <button id="btn-collapse" class="btn btn-primary"><img src="/static/img/icons/collapse.png"></button>
+              <button id="btn-expand" class="btn btn-primary"><img src="/static/img/icons/expand.png"></button>
+              <button id="btn-move-up" class="btn btn-primary"><img src="/static/img/icons/up.png"></button>
+              <button id="btn-move-down" class="btn btn-primary"><img src="/static/img/icons/down.png"></button>
+              <button id="btn-move-left" class="btn btn-primary"><img src="/static/img/icons/left.png"></button>
+              <button id="btn-move-right" class="btn btn-primary"><img src="/static/img/icons/right.png"></button>
+            </div>
+            
+            <div class="form-group">
+             <input type="checkbox" name="debug-mode" id="debug-mode" value="debug">Debug mode
+            </div>
+            
+            <button id="btn-save" class="btn btn-primary">Pobierz</button>
+          </div>          
+
+      </div>
+      <div class="col-sm-6" style="text-align:center">
+        <div id="card-flip-buttons">
+          <button id="btn-front" class="btn btn-primary">Przód</button>
+          <button id="btn-back" class="btn btn-primary">Tył</button>
+        </div>
+        <div class="flip-container">
+          <div class="flipper">
+  		    <div class="front"><div id="game"></div></div>
+  		    <div class="back"><div id="back"></div></div>
+          </div>
+        </div>
+	  </div>
+        
+      
+   
+  </div>
+</div>
+  
+  <script src="/static/js/jquery-3.2.1.min.js"></script>
+  <script src="/static/js/jquery-ui.min.js"></script>
+  
+
+  <script>
+    var picture = '';
+    
+    {% if karta %}
+      $("#title").val('{{ karta.nazwa|title }}');
+      $("#type").val('{{ karta.typ|title }}');
+      $("#encounter_nr").val('{{ karta.nr_spotkania }}');
+      $("#text").val('{{ karta.opis|new_lines }}');
+      picture = "{{ karta.picture }}";
+      if (!(picture == "")) {
+        picture = "{{  karta.id }}/"+picture;
+      }
+      var layout_to_set = "{{ karta.layout.name }}";
+      var pic_x = {{ karta.pic_x }};
+      var pic_y = {{ karta.pic_y }};
+      var pic_scale = {{ karta.pic_scale|stringformat:".2f" }};
+    {% else %}
+      var pic_x = 0;
+      var pic_y = 0;
+      var pic_scale = 1.0;
+      var layout_to_set = null;    
+    {% endif %}
+    
+    
+    var layouts = [
+    {% for layout in layouts %} {{layout|safe}}{% if not forloop.last %},{% endif %}
+    {% endfor %}];
+    var defaultTypes = [
+      "Zdarzenie",
+      "Przedmiot",
+      "Magiczny Przedmiot",
+      "Nieznajomy"
+    ];
+    
+    $( "#type" ).autocomplete({
+      source: defaultTypes,
+      close: function( event, ui ) { refreshType(); }
+    });
+    
+    
+  </script>
+    
+  <script src="/static/js/phaser.min.js"></script>
+  <script src="/static/js/canvas2image.js"></script>  
+  
+  <!--script src="/static/js/card_types.js"></script-->
+  
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/states/Boot.js"></script>
+  <script src="/static/js/states/Preload.js"></script>
+  <script src="/static/js/states/Game.js"></script>
+
+</body>
+</html>

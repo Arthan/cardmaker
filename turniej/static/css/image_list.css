@@ -1,0 +1,41 @@
+@font-face {
+	font-family: 'Windlass Extended';
+	src: url('fonts/WindlassExtended.eot');
+	src: url('fonts/WindlassExtended.eot?#iefix') format('embedded-opentype'),
+		url('fonts/WindlassExtended.woff') format('woff'),
+		url('fonts/WindlassExtended.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
+}
+
+h1 {
+    font-family: "Windlass Extended";
+    font-size: 40px;
+    color: #ffffff;
+    text-shadow: 0 2px 4px #000000;
+}
+
+body {
+    padding: 20px;
+    background-image: url("/static/img/mim_01.jpg");
+    background-attachment: fixed;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.covers {
+    margin: 20px;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 50px;
+}
+.cover {
+    float: left;
+    //height: 200px;
+    margin: 10px;
+    //width: 200px;
+}
+.thumbnail img {
+    //width: 200px;
+}
