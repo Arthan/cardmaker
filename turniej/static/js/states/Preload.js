@@ -20,14 +20,15 @@ class Preload {
     
     for (var i in layouts) {
       var layout = layouts[i].name;
-      this.load.image(layout+'-front-a', '/static/img/templates/'+layout+'_a.png');    
+      var layout_url = '/static/img/layouts/Talisman/'+layout+'/';
+      this.load.image(layout+'-front-a', layout_url + 'front.png');    
       if (layouts[i].long_txt) {
-        this.load.image(layout+'-front-b', '/static/img/templates/'+layout+'_b.png');
+        this.load.image(layout+'-front-b', layout_url + 'front_b.png');
       }
       //this.load.image(layout+'-jewel', 'assets/images/'+layout+'-jewel.png');    
     };
     //this.load.image('adventure-front-b', '/static/img/templates/adventure_b.png');    
-    this.load.image('icon-star', '/static/img/text-icons/ending-star.png');    
+    //this.load.image('icon-star', '/static/img/text-icons/ending-star.png');    
   
     
     //this.load.image('picture', 'assets/images/fantasy-illustration-goblins.jpg');

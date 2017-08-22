@@ -2,7 +2,7 @@ var game;
 var layout_type = 'a';
 var curr_layout = null;
 
-var symbols = [{'x': 0, 'y': 0, 'type': 'star'}];
+//var symbols = [{'x': 0, 'y': 0, 'type': 'star'}];
 
 var myText = function(game, x, y, text, style){
   Phaser.Text.call(this, game, x, y, text, style);
@@ -39,13 +39,13 @@ Phaser.Text.prototype.addFontWeight = function(weight, position){
 };
 
 Phaser.Text.prototype.updateLine = function (line, x, y) {
-  if (line.substr(0, 4) == '<br>' ) {
+  /*if (line.substr(0, 4) == '<br>' ) {
     //this.context.textBaseline="bottom";
     y = y - 16; 
     line = '______________________';
   } else {
     //this.context.textBaseline="alphabetic"; 
-  }
+  }*/
   
   if (line.indexOf('@') > -1 ) {
     //alert('go');
@@ -95,10 +95,10 @@ Phaser.Text.prototype.updateLine = function (line, x, y) {
 
             this.updateShadow(this.style.shadowFill);
             this.context.fillText(letter, x, y);
-            if (line.indexOf('@') > -1 ) {
+            /*if (line.indexOf('@') > -1 ) {
               game.symbol.x = x;
               game.symbol.y = y + game.txtText.y;
-            }
+            }*/
     
         }
 
@@ -129,6 +129,7 @@ function refreshCard() {
     
 function refreshLayout() {
   curr_layout = layouts[parseInt($("#layer").val())];
+  layout_url = '/static/img/layouts/Talisman/'+curr_layout.name+'/';
   game.scale.setGameSize(curr_layout.w, curr_layout.h);
   game.card.x = game.width/2;
   game.card.y = game.height/2;
@@ -140,7 +141,7 @@ function refreshLayout() {
   
   $("#back").css({'width': curr_layout.w+'px', 'height': curr_layout.h+'px'})
   
-  $("#layer").css('background-image', 'url(/static/img/templates/'+curr_layout.name+'_icon.png)');
+  $("#layer").css('background-image', 'url(' + layout_url + 'back_24.png)');
   
   if (curr_layout.long_txt) {
     game.card.loadTexture(curr_layout.name+'-front-'+layout_type);
@@ -149,9 +150,9 @@ function refreshLayout() {
   }
   
   if (['ifrit', 'ifrit_r'].indexOf(curr_layout.name) > -1) {
-    $("#back").css('background-image', 'url(/static/img/templates/adventure_back.png)'); 
+    $("#back").css('background-image', 'url(/static/img/layouts/Talisman/adventure/back.png)'); 
   } else {
-    $("#back").css('background-image', 'url(/static/img/templates/'+curr_layout.name+'_back.png)');
+    $("#back").css('background-image', 'url(' + layout_url + 'back.png)');
   }
   
   game.txtEncounter.visible = (curr_layout.en_nr);
@@ -183,8 +184,60 @@ function assignRecToRegion(rec, region) {
   region.height = rec[3];
 }
 
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
+
 function refreshText() {
-  var new_text = $("#text").val();
+  var new_text = $("#text").val();  
+  new_text = replaceAll(new_text, '<pz>', '<b><i>Pancerz</i></b>');
+  new_text = replaceAll(new_text, '<pa>', '<b><i>Pancerza</i></b>');
+  new_text = replaceAll(new_text, '<bń>', '<b><i>Broń</i></b>');
+  new_text = replaceAll(new_text, '<bi>', '<b><i>Broni</i></b>');
+  new_text = replaceAll(new_text, '<dg>', '<b><i>Drobiazg</i></b>');
+  new_text = replaceAll(new_text, '<py>', '<b><i>Przeklęty</i></b>');
+  
+  
+  game.txtText.fontStyles = [];
+  game.txtText.fontWeights = [];
+  game.txtText.fontSizes = [];
+
+  var markers = ['i', 'b'];
+
+  var i = 0;
+  var in_tag = false;
+  var pos1 = 0;
+  var pos2 = 0;  
+  while (i < new_text.length) {
+    var chr = new_text[i];
+    if (chr == '<') {
+      in_tag = true;
+      pos1 = i;
+    };
+    if ((chr == '>')&&(in_tag)) {
+      pos2 = i+1;
+      in_tag = false;
+      var tag = new_text.slice(pos1, pos2);
+      new_text = new_text.slice(0, pos1) + new_text.slice(pos2, new_text.length);
+      //alert(new_text);
+      //alert(tag);
+      if(tag == '<b>') {
+        game.txtText.addFontWeight('bold', pos1);
+      } else if(tag == '</b>') {
+        game.txtText.addFontWeight('normal', pos1);
+      } else if(tag == '<i>') {
+        game.txtText.addFontStyle('italic', pos1);
+      } else if(tag == '</i>') {
+        game.txtText.addFontStyle('normal', pos1);
+      }
+  
+      i -= pos2 - pos1;
+    };
+    
+    //alert(chr);
+    i++;
+  }
+  
   game.txtText.setText(new_text);
   if ((game.txtText.height > game.generic_text_region[3])&&(layout_type == 'a')) {
     layout_type = 'b';
@@ -255,7 +308,7 @@ img.addEventListener('load', function() {
   
   for (var i = 0; i < len; i += 4) {
    res = [newpx[i], newpx[i+1], newpx[i+2], newpx[i+3]];
-   res = sepia(res[0], res[1], res[2], res[3]);
+   //res = sepia(res[0], res[1], res[2], res[3]);
    //res[0] = 255;
    //res[1] = 255;
    //res[2] = 255;
@@ -296,8 +349,8 @@ window.onload = function() {
 
   // wypelnianie listy z szablonami
   for (i in layouts) {
-    $('#layer').append('<option value="'+i+'" style="background-image:url(/static/img/templates/' +
-      layouts[i].name + '_icon.png);">' + layouts[i].caption + '</option>');
+    $('#layer').append('<option value="'+i+'" style="background-image:url(/static/img/layouts/Talisman/' + 
+      layouts[i].name + '/back_24.png);">' + layouts[i].caption + '</option>');
   }  
 
   game = new Phaser.Game(490, 750, Phaser.CANVAS, 'game', window.devicePixelRatio);

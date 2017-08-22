@@ -10,8 +10,9 @@ class Game {
     
     if (multiline) {
       var txtText = new myText(this.game, 0, 0, text, style);
+
       
-      txtText.addFontStyle('italic', 0);
+      //txtText.addFontStyle('italic', 0);
       //txtText.addFontWeight('bold', 0);
       /*txtText.addFontSize('42px', 0);
       txtText.addFontSize('30px', 1);
@@ -120,11 +121,11 @@ class Game {
     game.txtType = this.TextBox(game.type_region, '', game.font_caxton, game.type_font_size_max);
     
     game.generic_encounter_number_region = [390, 652, 40, 40];
-    game.encounter_font_size_max = 32;
+    game.encounter_font_size_max = 36;
     game.encounter_region = this.CreateRegion(game.generic_encounter_number_region);
     game.txtEncounter = this.TextBox(game.encounter_region, '1', game.font_caxton, game.encounter_font_size_max);    
     game.txtEncounter.fill = "white";
-    game.txtEncounter.fontWeight = "bold";
+    //game.txtEncounter.fontWeight = "bold";
     
     game.generic_text_region = [45, 480, 394, 202];
     game.generic_text_region_b = [45, 370, 394, 312];
@@ -134,9 +135,9 @@ class Game {
     game.txtText.lineSpacing = -10;
     game.txtText.align = 'center';
     
-    game.symbol = this.add.sprite(0, 0, 'icon-star');
+    //game.symbol = this.add.sprite(0, 0, 'icon-star');
     //game.txtText.addChild(game.symbol);
-    game.symbol.scale.setTo(0.33);
+    //game.symbol.scale.setTo(0.33);
     
     
     refreshCard();

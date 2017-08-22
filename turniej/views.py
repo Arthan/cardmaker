@@ -70,7 +70,7 @@ def image_list(request):
     #db_game = Game.objects.get(nazwa=game_name)
     #data['game'] = db_game
     images = Layout.objects.filter(official=False, on_reverse_list=True)
-    images_official = Layout.objects.filter(official=True, on_reverse_list=True)
+    images_official = Layout.objects.filter(official=True, on_reverse_list=True).order_by('element__width')
     data['images'] = images
     data['images_official'] = images_official
     return render_to_response('image_list.html', data)
