@@ -118,6 +118,25 @@ function setLayout(name) {
   }
 }
 
+function setLayoutVisible(idx, visible) {
+  if (visible) {
+    $('#layer option[value="'+idx+'"]').show();
+  } else {
+    $('#layer option[value="'+idx+'"]').hide();
+  }
+}
+
+function refreshLayoutList() {
+  var exp_id = parseInt($("#expansion").val());
+  for (i in layouts) {
+    var in_exp = true;
+    if (exp_id > 0) {
+      in_exp = layouts[i].expansions.indexOf(exp_id) > -1;
+    }    
+    setLayoutVisible(i, in_exp);
+  }
+}
+
 function refreshCard() { 
   refreshLayout();
   refreshTitle();
@@ -355,6 +374,12 @@ window.onload = function() {
   document.fonts.load('10pt "Windlass Extended"');//.then(renderText);;
   document.fonts.load('10pt "Caxton Extended"');
 
+  // wypelnianie listy dodatków
+   $('#expansion').append('<option value="0">Wszystkie</option>');
+  for (i in dodatki) {
+    $('#expansion').append('<option value="'+dodatki[i].id+'" >' + dodatki[i].caption + '</option>');
+  }  
+
   // wypelnianie listy z szablonami
   for (i in layouts) {
     $('#layer').append('<option value="'+i+'" style="background-image:url(/static/img/layouts/Talisman/' + 
@@ -387,6 +412,9 @@ window.onload = function() {
     refreshLayout();
   });
 
+  $('#expansion').on('change',function(e){
+    refreshLayoutList();
+  });
   
   $("#btn-save").click(function(){
     //var dataURL = game.canvas.toDataURL();

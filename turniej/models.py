@@ -70,8 +70,7 @@ class KartaNowa(models.Model):
         return self.nazwa
 
 class Game(models.Model):
-    nazwa = models.CharField(max_length=50)
-    
+    nazwa = models.CharField(max_length=50)    
     def __unicode__(self):
         return self.nazwa
 
@@ -83,3 +82,12 @@ class Element(models.Model):
     border_radius  = models.IntegerField()
     def __unicode__(self):
         return u'{} - {}'.format(self.game.nazwa, self.nazwa)
+
+class Dodatek(models.Model):
+    nazwa = models.CharField(max_length=50)
+    game = models.ForeignKey('Game')
+    layout = models.ManyToManyField('Layout')
+    class Meta:
+        ordering = ['nazwa']
+    def __unicode__(self):
+        return self.nazwa

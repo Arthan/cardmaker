@@ -59,9 +59,12 @@ def generator(request, game_name='Talisman', card_id=''):
           'w': db_layout.element.width,
           'h': db_layout.element.height,
           'radius': db_layout.element.border_radius,
+          'expansions': list(dodatek.id for dodatek in db_layout.dodatek_set.all()),
         }
         layouts.append(json.dumps(layout))
     data['layouts'] = layouts
+ 
+    data['dodatki'] = Dodatek.objects.filter(game__nazwa=game_name)
  
     return render_to_response('generator.html', data)
 

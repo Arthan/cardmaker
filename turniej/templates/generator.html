@@ -16,7 +16,12 @@
       <div class="col-sm-6">
           <div id="params" class="jumbotron center">
             <div class="form-group">
-          
+            <label for="expansion">z dodatku:</label>
+              <select name="expansion" id="expansion" class="form-control" >
+              </select>
+            </div>
+            
+            <div class="form-group">
             <label for="layer">Typ Karty:</label>
               <select name="layer" id="layer" class="form-control" >
               </select>
@@ -110,6 +115,10 @@
       var layout_to_set = null;    
     {% endif %}
     
+    var dodatki = [
+      {% for dodatek in dodatki %}{"id":{{dodatek.id}}, "caption": "{{dodatek.nazwa}}" }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ];
     
     var layouts = [
     {% for layout in layouts %} {{layout|safe}}{% if not forloop.last %},{% endif %}
