@@ -201,6 +201,7 @@ function refreshText() {
   game.txtText.fontStyles = [];
   game.txtText.fontWeights = [];
   game.txtText.fontSizes = [];
+  game.txtText.colors = [];
 
   var markers = ['i', 'b'];
 
@@ -220,17 +221,24 @@ function refreshText() {
       var tag = new_text.slice(pos1, pos2);
       new_text = new_text.slice(0, pos1) + new_text.slice(pos2, new_text.length);
       //alert(new_text);
-      //alert(tag);
-      if(tag == '<b>') {
+      tag = tag.slice(1, tag.length-1);
+      var params = tag.split(' ');
+      tag = params.shift();
+      //alert('tag:'+ tag);
+      //alert('params:' + params);
+      if(tag == 'b') {
         game.txtText.addFontWeight('bold', pos1);
-      } else if(tag == '</b>') {
+      } else if(tag == '/b') {
         game.txtText.addFontWeight('normal', pos1);
-      } else if(tag == '<i>') {
+      } else if(tag == 'i') {
         game.txtText.addFontStyle('italic', pos1);
-      } else if(tag == '</i>') {
+      } else if(tag == '/i') {
         game.txtText.addFontStyle('normal', pos1);
+      } else if(tag == 'colour') {
+        game.txtText.addColor(params[0], pos1);
+      } else if(tag == '/colour') {
+        game.txtText.addColor('black', pos1);
       }
-  
       i -= pos2 - pos1;
     };
     
