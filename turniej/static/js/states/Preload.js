@@ -39,6 +39,11 @@ class Preload {
       this.load.image('picture', '/static/cards/'+picture);    
     }
     
+    this.load.image('exp_sym', '/static/img/exp_symbols/exp_sym.png');
+    this.load.image('exp_sym_dungeon', '/static/img/exp_symbols/exp_sym_dungeon.png');
+    this.load.image('exp_icon_1', '/static/img/exp_symbols/icons/bloodmoon.png');    
+    this.load.image('exp_icon_2', '/static/img/exp_symbols/icons/frostmarch.png');    
+    this.load.image('exp_icon_3', '/static/img/exp_symbols/icons/reaper.png');    
         
     this.load.start();
     
