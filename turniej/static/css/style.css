@@ -64,8 +64,17 @@ body {
 #params {
   color: white;
   background-color: rgba(150, 150, 150, 0.75);
-  border-radius: 10px; 
+  border-radius: 10px;
+  height: 450px; 
 } 
+
+.ui-widget-content {
+  #color: white;
+}
+
+.ui-widget-header {
+  background: none;
+}
 
 #game canvas {
   border: 2px solid black;

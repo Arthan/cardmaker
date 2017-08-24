@@ -207,8 +207,8 @@ function refreshExpSymbol() {
     game.exp_icon.visible = true;    
     game.exp_icon.loadTexture('exp_icon_'+exp_sym);
     var ratio = game.exp_icon.width / game.exp_icon.height;
-    game.exp_icon.width = 28;
-    game.exp_icon.height = 28 / ratio;
+    game.exp_icon.width = 30;
+    game.exp_icon.height = 30 / ratio;
   }
 };
 
@@ -412,8 +412,8 @@ img_symbol.addEventListener('load', function() {
   
   game.exp_icon.loadTexture(bmd);
   var ratio = game.exp_icon.width / game.exp_icon.height;
-  game.exp_icon.width = 28;
-  game.exp_icon.height = 28 / ratio;
+  game.exp_icon.width = 30;
+  game.exp_icon.height = 30 / ratio;
   
   //game.exp_icon.width = img.width;
   //game.exp_icon.height = img.height;
@@ -439,6 +439,8 @@ window.onload = function() {
   document.fonts.load('10pt "Windlass Extended"');//.then(renderText);;
   document.fonts.load('10pt "Caxton Extended"');
 
+  $("#params").tabs();
+   
   // wypelnianie listy dodatków
    $('#expansion').append('<option value="0">Wszystkie</option>');
   for (i in dodatki) {
