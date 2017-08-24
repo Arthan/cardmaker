@@ -143,6 +143,7 @@ function refreshCard() {
   refreshType();
   refreshText();
   refreshEncounterNr();
+  refreshExpSymbol();
   game.debug_mode = $("#debug-mode").prop('checked');
 };
     
@@ -194,6 +195,21 @@ function refreshType() {
   var new_type = $("#type").val();
   game.txtType.setText(new_type);
   game.CalcFontSize(game.txtType, game.type_region, game.type_font_size_max);
+};
+
+function refreshExpSymbol() {
+  var exp_sym = $("#exp-symbol").val();
+  if (exp_sym == "0") {
+    game.exp_sym.visible = false;
+    game.exp_icon.visible = false;    
+  } else {
+    game.exp_sym.visible = true;
+    game.exp_icon.visible = true;    
+    game.exp_icon.loadTexture('exp_icon_'+exp_sym);
+    var ratio = game.exp_icon.width / game.exp_icon.height;
+    game.exp_icon.width = 28;
+    game.exp_icon.height = 28 / ratio;
+  }
 };
 
 function assignRecToRegion(rec, region) {
@@ -278,7 +294,11 @@ function refreshText() {
     game.txtText.x = Math.floor(game.text_region.x + game.text_region.width / 2);
     game.txtText.y = game.text_region.y;
     
-    refreshLayout();
+    //game.exp_sym.x = 40;
+    game.exp_sym.y = 280;
+    //game.exp_icon.x = 59;
+    game.exp_icon.y = 336;
+    
   } else if ((game.txtText.height <= game.generic_text_region[3])&&(layout_type == 'b')) {
     layout_type = 'a';
     assignRecToRegion(game.generic_picture_rec, game.picture_region);
@@ -291,8 +311,13 @@ function refreshText() {
     game.txtText.x = Math.floor(game.text_region.x + game.text_region.width / 2);
     game.txtText.y = game.text_region.y;
     
-    refreshLayout();
+    //game.exp_sym.x = 40;
+    game.exp_sym.y = 394;
+    //game.exp_icon.x = 59;
+    game.exp_icon.y = 450;
+    
   };
+  refreshLayout();
   //game.CalcFontSize(game.txtText, game.text_region, game.text_font_size_max);
 };
 
@@ -321,7 +346,6 @@ img.addEventListener('load', function() {
   //bmd.ctx.fillStyle = '#ff0000';
   //bmd.ctx.fill();
   
-  var img = document.getElementById("blah");
   game.picture.width = img.width;
   game.picture.height = img.height;
   
@@ -357,12 +381,53 @@ img.addEventListener('load', function() {
   
 }, false);
 
-function readImage(input) {
+var img_symbol = document.getElementById("exp-image");
+img_symbol.addEventListener('load', function() {
+  
+  //game.picture.width = img.width;
+  //game.picture.height = img.height;
+  
+  var bmd = game.add.bitmapData(img_symbol.width, img_symbol.height);
+  bmd.ctx.drawImage(img_symbol, 0, 0);
+  
+  var img_data = bmd.ctx.getImageData(0, 0, img_symbol.width, img_symbol.height);
+  var newpx = img_data.data;
+  var res = [];
+  var len = newpx.length;
+  
+  for (var i = 0; i < len; i += 4) {
+   res = [newpx[i], newpx[i+1], newpx[i+2], newpx[i+3]];
+   //res = sepia(res[0], res[1], res[2], res[3]);
+   //res[0] = 255;
+   //res[1] = 255;
+   //res[2] = 255;
+   //res[3] = 255;
+   
+   newpx[i]   = res[0]; // r
+   newpx[i+1] = res[1]; // g
+   newpx[i+2] = res[2]; // b
+   newpx[i+3] = res[3]; // a
+  }
+  bmd.ctx.putImageData(img_data, 0, 0);
+  
+  game.exp_icon.loadTexture(bmd);
+  var ratio = game.exp_icon.width / game.exp_icon.height;
+  game.exp_icon.width = 28;
+  game.exp_icon.height = 28 / ratio;
+  
+  //game.exp_icon.width = img.width;
+  //game.exp_icon.height = img.height;
+  //var ratio = game.exp_icon.width / img.width;
+  //game.picture.scale.setTo(ratio);
+  
+}, false);
+
+function readImage(input, output) {
   if (input.files && input.files[0]) {
     var reader = new FileReader();
 
     reader.onload = function (e) {
-      $('#blah').attr('src', e.target.result);      
+      $('#'+output).attr('src', e.target.result);      
     };
 
     reader.readAsDataURL(input.files[0]);
@@ -414,6 +479,10 @@ window.onload = function() {
 
   $('#expansion').on('change',function(e){
     refreshLayoutList();
+  });
+
+  $('#exp-symbol').on('change',function(e){
+    refreshExpSymbol();
   });
   
   $("#btn-save").click(function(){

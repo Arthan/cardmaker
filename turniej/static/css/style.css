@@ -150,6 +150,6 @@ body {
   text-align: center;
 }
 
-#blah {
+.hidden {
   display: none;
 }

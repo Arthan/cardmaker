@@ -49,8 +49,8 @@
        
             <div class="form-group">
               <label for="image">Grafika:</label>  
-              <input type="file" name="image" id="image" class="form-control" onchange="readImage(this);">
-              <img id="blah" src="#"/>
+              <input type="file" name="image" id="image" class="form-control" onchange="readImage(this, 'blah');">
+              <img id="blah" class="hidden" src="#"/>
             </div>
             
             <div class="form-group">
@@ -64,14 +64,21 @@
 
             <div class="form-group">
             <label for="exp-symbol">Symbol dodatku:</label>
-              <select name="exp-symbol" id="exp-symbol-list" class="form-control">
+              <select name="exp-symbol" id="exp-symbol" class="form-control">
                 <option value="0">Brak</option>
                 <option value="1">Wilkołak</option>
                 <option value="2">Królowa Lodu</option>
                 <option value="3">Żniwiarz</option>
-                <option value="99">Własny</option>
+                <option value="4">Gwiazdka</option>
               </select>
             </div>
+            
+            <div class="form-group">
+              <label for="exp-icon">Własna grafika dodatku:</label>  
+              <input type="file" name="exp-icon" id="exp-icon" class="form-control" onchange="readImage(this, 'exp-image');">
+              <img id="exp-image" class="hidden" src="#"/>
+            </div>
+            
             
             <div class="form-group">
              <input type="checkbox" name="debug-mode" id="debug-mode" value="debug">Debug mode

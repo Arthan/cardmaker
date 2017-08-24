@@ -106,10 +106,10 @@ class Game {
     
     //game.card.scale.setTo(0.5);
     
-    game.exp_sym = this.add.sprite(39, 393, 'exp_sym');
-    game.exp_icon = this.add.sprite(58, 450, 'exp_icon_1');
+    game.exp_sym = this.add.sprite(40, 394, 'exp_sym');
+    game.exp_icon = this.add.sprite(59, 450, 'exp_icon_1');
     game.exp_icon.anchor.set(0.5, 0.5);
-    game.exp_icon.scale.setTo(0.4);
+    //game.exp_icon.scale.setTo(0.4);
     
     game.font_windlass = "Windlass Extended";
     game.font_caxton = "Caxton Extended";
