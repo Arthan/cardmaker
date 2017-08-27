@@ -43,14 +43,12 @@ class Preload {
     this.load.image('exp_sym_dungeon', '/static/img/exp_symbols/exp_sym_dungeon.png');
     
     var exp_icons = [
-      'bloodmoon',
-      'frostmarch',
-      'reaper',
-      'example'
+      'anchor',
+      'sunrise',
     ];
     for (var i in exp_icons) {
       var id = parseInt(i) + 1;
-      this.load.image('exp_icon_'+id, '/static/img/exp_symbols/icons/'+exp_icons[i]+'.png');
+      this.load.image('exp_icon_'+id, '/static/img/exp_symbols/game-icons/'+exp_icons[i]+'.png');
     }
 
     this.load.start();

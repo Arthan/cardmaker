@@ -49,6 +49,7 @@ class Layout(models.Model):
     official = models.BooleanField(default=True)
     on_reverse_list = models.BooleanField(default=True)
     on_layout_list = models.BooleanField(default=True)
+    exp_symbol = models.BooleanField(default=False)
     class Meta:
         ordering = ['name']
     def __unicode__(self):

@@ -183,6 +183,7 @@ function refreshLayout() {
   } else {
     game.card.scale.setTo(2.0);
   };
+  refreshExpSymbol();
 };
 
 function refreshTitle() {
@@ -199,7 +200,7 @@ function refreshType() {
 
 function refreshExpSymbol() {
   var exp_sym = $("#exp-symbol").val();
-  if (exp_sym == "0") {
+  if ((exp_sym == "0")||(curr_layout.exp_sym == false)) {
     game.exp_sym.visible = false;
     game.exp_icon.visible = false;    
   } else {
@@ -338,16 +339,14 @@ var sepia = function(r, g, b, a) {
   return [avg + 100, avg + 50, avg + 0, 255]; // 100, 50, 0
 }
 
-
-var img = document.getElementById("blah");
-img.addEventListener('load', function() {
+function showPicture(img, effect=null, resize=true) {
   //bmd.ctx.beginPath();
   //bmd.ctx.rect(0,0,128,128);
   //bmd.ctx.fillStyle = '#ff0000';
   //bmd.ctx.fill();
   
-  game.picture.width = img.width;
-  game.picture.height = img.height;
+  //game.picture.width = img.width;
+  //game.picture.height = img.height;
   
   var bmd = game.add.bitmapData(img.width, img.height);
   bmd.ctx.drawImage(img, 0, 0);
@@ -359,7 +358,9 @@ img.addEventListener('load', function() {
   
   for (var i = 0; i < len; i += 4) {
    res = [newpx[i], newpx[i+1], newpx[i+2], newpx[i+3]];
-   //res = sepia(res[0], res[1], res[2], res[3]);
+   if (!!effect) {
+     res = effect(res[0], res[1], res[2], res[3]);
+   }
    //res[0] = 255;
    //res[1] = 255;
    //res[2] = 255;
@@ -374,11 +375,15 @@ img.addEventListener('load', function() {
   
   game.picture.loadTexture(bmd);
   
-  game.picture.width = img.width;
-  game.picture.height = img.height;
-  var ratio = game.picture_region.width / img.width;
-  game.picture.scale.setTo(ratio);
-  
+  //game.picture.width = img.width;
+  //game.picture.height = img.height;
+  //var ratio = game.picture_region.width / img.width;
+  //game.picture.scale.setTo(ratio);
+}
+
+var img = document.getElementById("blah");
+img.addEventListener('load', function() {
+  showPicture(img, pic_effect);
 }, false);
 
 var img_symbol = document.getElementById("exp-image");
@@ -389,7 +394,7 @@ img_symbol.addEventListener('load', function() {
   
   var bmd = game.add.bitmapData(img_symbol.width, img_symbol.height);
   bmd.ctx.drawImage(img_symbol, 0, 0);
-  
+  /*
   var img_data = bmd.ctx.getImageData(0, 0, img_symbol.width, img_symbol.height);
   var newpx = img_data.data;
   var res = [];
@@ -409,7 +414,7 @@ img_symbol.addEventListener('load', function() {
    newpx[i+3] = res[3]; // a
   }
   bmd.ctx.putImageData(img_data, 0, 0);
-  
+  */
   game.exp_icon.loadTexture(bmd);
   var ratio = game.exp_icon.width / game.exp_icon.height;
   game.exp_icon.width = 30;
@@ -419,7 +424,6 @@ img_symbol.addEventListener('load', function() {
   //game.exp_icon.height = img.height;
   //var ratio = game.exp_icon.width / img.width;
   //game.picture.scale.setTo(ratio);
-  
 }, false);
 
 function readImage(input, output) {
@@ -440,6 +444,8 @@ window.onload = function() {
   document.fonts.load('10pt "Caxton Extended"');
 
   $("#params").tabs();
+  $(":checkbox").checkboxradio();
+  
    
   // wypelnianie listy dodatków
    $('#expansion').append('<option value="0">Wszystkie</option>');
@@ -498,7 +504,30 @@ window.onload = function() {
     game.debug_mode = $("#debug-mode").prop('checked');
   });
 
+  $("#eff-sepia").click(function(){
+    var checked = $("#eff-sepia").prop('checked');
+    if (checked) {
+      pic_effect = sepia;
+    } else {
+      pic_effect = null;
+    }
+    $("#eff-b-w")[0].checked = false;
+    $("#eff-b-w").checkboxradio("refresh");
+    showPicture(img, pic_effect, false);
+  });
 
+  $("#eff-b-w").click(function(){
+    var checked = $("#eff-b-w").prop('checked');
+    if (checked) {
+      pic_effect = blackWhite;
+    } else {
+      pic_effect = null;
+    }
+    $("#eff-sepia")[0].checked = false;
+    $("#eff-sepia").checkboxradio("refresh");
+    showPicture(img, pic_effect, false);
+  });
+  
   $("#btn-front").click(function(){
     $(".flip-container").removeClass('flip');
   });

@@ -60,6 +60,7 @@ def generator(request, game_name='Talisman', card_id=''):
           'h': db_layout.element.height,
           'radius': db_layout.element.border_radius,
           'expansions': list(dodatek.id for dodatek in db_layout.dodatek_set.all()),
+          'exp_sym': db_layout.exp_symbol
         }
         layouts.append(json.dumps(layout))
     data['layouts'] = layouts

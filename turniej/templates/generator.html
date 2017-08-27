@@ -73,15 +73,20 @@
               <button id="btn-move-left" class="btn btn-primary"><img src="/static/img/icons/left.png"></button>
               <button id="btn-move-right" class="btn btn-primary"><img src="/static/img/icons/right.png"></button>
             </div>
+            
+            <div class="form-group">
+              <label for="eff-sepia">Sepia</label>
+              <input type="checkbox" name="eff-sepia" id="eff-sepia">
+              <label for="eff-b-w">B&W</label>
+              <input type="checkbox" name="eff-b-w" id="eff-b-w">
+            </div>
+            <br>
 
             <div class="form-group">
             <label for="exp-symbol">Symbol dodatku:</label>
               <select name="exp-symbol" id="exp-symbol" class="form-control">
-                <option value="0">Brak</option>
-                <option value="1">Wilkołak</option>
-                <option value="2">Królowa Lodu</option>
-                <option value="3">Żniwiarz</option>
-                <option value="4">Gwiazdka</option>
+                <option value="1">Anchor</option>
+                <option value="2">Sunrise</option>
               </select>
             </div>
             
@@ -92,18 +97,17 @@
             </div>
             
         </div>
-      </div>  
-    
-    
+      </div>            
             
+      <br>
+      <div class="form-group">
+        <label for="debug-mode">Debug mode</label>
+        <input type="checkbox" name="debug-mode" id="debug-mode" value="debug">
+      </div>
+      
+      
+      <button id="btn-save" class="btn btn-primary">Pobierz</button>
             
-            
-            <div class="form-group">
-             <input type="checkbox" name="debug-mode" id="debug-mode" value="debug">Debug mode
-            </div>
-            
-            <button id="btn-save" class="btn btn-primary">Pobierz</button>
-                  
 
     </div>
     
@@ -132,6 +136,7 @@
 
   <script>
     var picture = '';
+    var pic_effect = null;
     
     {% if karta %}
       $("#title").val('{{ karta.nazwa|title }}');
