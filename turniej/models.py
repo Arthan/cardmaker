@@ -37,7 +37,6 @@ class Karta(models.Model):
         return self.nazwa
 
 
-
 class Layout(models.Model):
     element = models.ForeignKey('Element')
     name = models.CharField(max_length=50)
@@ -50,6 +49,7 @@ class Layout(models.Model):
     on_reverse_list = models.BooleanField(default=True)
     on_layout_list = models.BooleanField(default=True)
     exp_symbol = models.BooleanField(default=False)
+    exp_symbol_background = models.CharField(max_length=50, null=True, blank=True)
     class Meta:
         ordering = ['name']
     def __unicode__(self):

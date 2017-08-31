@@ -439,13 +439,13 @@ function readImage(input, output) {
 };
 
 window.onload = function() {
+  //$("#params").tabs();
+  //$(":checkbox").checkboxradio();
+  
   // wczytywanie czcionek
   document.fonts.load('10pt "Windlass Extended"');//.then(renderText);;
   document.fonts.load('10pt "Caxton Extended"');
 
-  $("#params").tabs();
-  $(":checkbox").checkboxradio();
-  
    
   // wypelnianie listy dodatków
    $('#expansion').append('<option value="0">Wszystkie</option>');
