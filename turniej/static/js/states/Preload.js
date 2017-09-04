@@ -39,8 +39,13 @@ class Preload {
       this.load.image('picture', '/static/cards/'+picture);    
     }
     
-    this.load.image('exp_sym', '/static/img/exp_symbols/exp_sym.png');
+    this.load.image('exp_sym_adventure', '/static/img/exp_symbols/exp_sym_adventure.png');
     this.load.image('exp_sym_dungeon', '/static/img/exp_symbols/exp_sym_dungeon.png');
+    this.load.image('exp_sym_highland', '/static/img/exp_symbols/exp_sym_highland.png');
+    this.load.image('exp_sym_wampiry', '/static/img/exp_symbols/exp_sym_wampiry.png');
+    this.load.image('exp_sym_nether', '/static/img/exp_symbols/exp_sym_nether.png');
+    
+    this.load.image('no_enc_nr_adventure', '/static/img/layouts/Talisman/adventure/no_encounter_nr.png');
     
     var exp_icons = [
       'anchor',

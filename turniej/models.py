@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
-import uuid
-
 from django.db import models
+from django.contrib.auth.models import User
+import uuid
 
 class Talia(models.Model):
     nazwa = models.CharField(max_length=20)
@@ -59,14 +59,14 @@ class KartaNowa(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     layout = models.ForeignKey('Layout')
     nazwa = models.CharField(max_length=50)
-    typ = models.CharField(max_length=50)
-    nr_spotkania = models.CharField(max_length=1)
-    opis = models.TextField()
-    picture = models.CharField(max_length=250)
-    pic_x = models.IntegerField()
-    pic_y = models.IntegerField()
-    pic_scale = models.FloatField()
-    
+    typ = models.CharField(max_length=50, default='', blank=True)
+    nr_spotkania = models.CharField(max_length=1, default='', blank=True)
+    opis = models.TextField(default='', blank=True)
+    picture = models.CharField(max_length=250, null=True, blank=True)
+    pic_x = models.IntegerField(default=0)
+    pic_y = models.IntegerField(default=0)
+    pic_scale = models.FloatField(default=1.0)
+    user = models.ForeignKey(User)
     def __unicode__(self):
         return self.nazwa
 

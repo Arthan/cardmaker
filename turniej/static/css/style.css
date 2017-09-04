@@ -40,7 +40,7 @@
 }
 
 body {
-  padding: 20px;
+  //padding: 20px;
   background-image: url("/static/img/mim_01.jpg");
   background-attachment: fixed;
   background-position: center center;
@@ -65,7 +65,7 @@ body {
   color: white;
   background-color: rgba(150, 150, 150, 0.75);
   border-radius: 10px;
-  height: 450px; 
+  height: 480px; 
 } 
 
 .ui-widget-content {
@@ -137,13 +137,13 @@ body {
 }
 
 
-#layer {
+#layout {
   padding-left: 24px;
   background-repeat: no-repeat;
   background-position: 0px 4px;
 }
 
-#layer option {
+#layout option {
   background-repeat: no-repeat;
   height: 26px;
   padding-left: 24px;
@@ -162,3 +162,57 @@ body {
 .hidden {
   display: none;
 }
+
+#header {
+  background-color: rgba(150, 150, 150, 0.75);
+  border-radius: 10px;
+  color: white;
+  margin: 5px;
+  padding: 0px 10px;
+  height: 50px;
+  line-height: 50px;
+  text-align: right;
+}
+
+a:link, a:visited {
+  color: black;
+  font-weight: bold;
+}
+
+#header ul {
+  list-style: none;
+  padding-left: 0px;
+}
+
+#header > ul > li {
+  float: left;
+  margin: 0px 10px;
+}
+
+#header > ul > li.rightside {
+  float: right;     
+}
+
+#hdr-title {
+  color: black;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: "Windlass Extended";
+}
+
+#frm-login {
+  background-color: rgba(220, 220, 220, 0.85);
+  border-radius: 10px;
+  height: 140px; 
+  width: 300px;
+  padding: 20px;
+  margin: 0px auto;
+}
+
+#frm-signup {
+  background-color: rgba(220, 220, 220, 0.85);
+  border-radius: 10px;
+  width: 100%;
+  padding: 20px;
+  margin: 0px auto;
+} 

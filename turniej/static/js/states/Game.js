@@ -106,6 +106,9 @@ class Game {
     
     //game.card.scale.setTo(0.5);
     
+    
+    game.no_enc_nr = this.add.sprite(332, 568, 'no_enc_nr_adventure');
+    
     game.exp_sym = this.add.sprite(40, 394, 'exp_sym');
     game.exp_icon = this.add.sprite(59, 450, 'exp_icon_1');
     game.exp_icon.anchor.set(0.5, 0.5);

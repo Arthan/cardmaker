@@ -3,7 +3,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Generator</title>
+  <title>Generator kart</title>
+  <link rel="shortcut icon" href="/static/img/icons/card_32.png">
   <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui.min.css">
   <link rel="stylesheet" type="text/css" href="/static/css/style.css">
@@ -14,9 +15,43 @@
 
   <script>
     $( function() {
+    
+      $( "#dlg-check-title" ).dialog({
+        autoOpen: false,
+        resizable: false,
+        height: "auto",
+        width: 400,
+        modal: true,
+        buttons: {
+          OK: function() {
+            $( this ).dialog( "close" );
+          }
+        }
+      });
       $("#params").tabs();
       $(":checkbox").checkboxradio();
       $("#params").removeClass('hidden');
+      $( "#btn-check-title" ).button().on( "click", function() {
+        $("#check-title-results").html("szukam ...");
+        $("#dlg-check-title").dialog( "open" );
+        var title = $("#title").val();
+        $.getJSON( "/check_title/?title="+title, function( data ) {
+          var items = [];
+          $.each( data.result, function( key, val ) {
+            items.push( "<li id='" + key + "'>" + val + "</li>" );
+          });
+          if (items.length > 0) {
+            $("#check-title-results").html("Znaleziono "+items.length+":");
+            $( "<ul/>", {
+              "class": "my-new-list",
+              html: items.join( "" )
+            }).appendTo( "#check-title-results" );
+          } else {
+            $("#check-title-results").html("Nie znaleziono kart o takim tytule.");
+          }
+          
+        });
+      });
     } );
     
   </script>
@@ -26,10 +61,24 @@
 
 <div class="container">
   <div class="row">
+    <div id="header">
+      <ul>
+        <li><img src="/static/img/icons/card_32.png"></li>
+        <li id="hdr-title">Generator Kart</li>
+        {% if user.is_authenticated %}
+        <li class="rightside"><a href="/logout/">Wyloguj</a></li>
+        <li class="rightside"><a href="/list/">Moje karty</a></li>
+        {% else %}
+        <li class="rightside"><a href="/signup/">Zarejestruj się</a></li>
+        <li class="rightside"><a href="/login/">Zaloguj</a></li>
+        {% endif %}
+      </ul>
+    </div>
     
     <div class="col-sm-6">
         
-    
+      <form action="." method="post">
+      {% csrf_token %}
       <div id="params" class="hidden">
         <ul>
           <li><a href="#tabs-1">Szablon</a></li>
@@ -39,13 +88,13 @@
         <div id="tabs-1">
             <div class="form-group">
               <label for="expansion">z dodatku:</label>
-              <select name="expansion" id="expansion" class="form-control" >
+              <select id="expansion" class="form-control" >
               </select>
             </div>
             
             <div class="form-group">
-              <label for="layer">Typ Karty:</label>
-              <select name="layer" id="layer" class="form-control" >
+              <label for="layout">Szablon Karty:</label>
+              <select name="layout" id="layout" class="form-control" >
               </select>
             </div>  
         </div>
@@ -53,6 +102,7 @@
             <div class="form-group">
               <label for="title">Nazwa Karty:</label>
               <input name="title" id="title" class="form-control" type="text" value=""/>
+              <button type="button" id="btn-check-title" class="btn">Sprawdź unikalność nazwy</button>
             </div>
             
             <div class="form-group">
@@ -61,8 +111,8 @@
             </div>
             
             <div class="form-group">
-              <label for="level">Numer spotkania:</label>  
-              <input name="level" id="encounter_nr" maxlength="1" class="form-control" type="text" value=""/>
+              <label for="encounter_nr">Numer spotkania:</label>  
+              <input name="encounter_nr" id="encounter_nr" maxlength="1" class="form-control" type="text" value=""/>
             </div>
             
             <div class="form-group">
@@ -79,19 +129,19 @@
             </div>
             
             <div class="form-group">
-              <button id="btn-collapse" class="btn btn-primary"><img src="/static/img/icons/collapse.png"></button>
-              <button id="btn-expand" class="btn btn-primary"><img src="/static/img/icons/expand.png"></button>
-              <button id="btn-move-up" class="btn btn-primary"><img src="/static/img/icons/up.png"></button>
-              <button id="btn-move-down" class="btn btn-primary"><img src="/static/img/icons/down.png"></button>
-              <button id="btn-move-left" class="btn btn-primary"><img src="/static/img/icons/left.png"></button>
-              <button id="btn-move-right" class="btn btn-primary"><img src="/static/img/icons/right.png"></button>
+              <button id="btn-collapse" type="button" class="btn btn-primary"><img src="/static/img/icons/collapse.png"></button>
+              <button id="btn-expand" type="button" class="btn btn-primary"><img src="/static/img/icons/expand.png"></button>
+              <button id="btn-move-up" type="button" class="btn btn-primary"><img src="/static/img/icons/up.png"></button>
+              <button id="btn-move-down" type="button" class="btn btn-primary"><img src="/static/img/icons/down.png"></button>
+              <button id="btn-move-left" type="button" class="btn btn-primary"><img src="/static/img/icons/left.png"></button>
+              <button id="btn-move-right" type="button" class="btn btn-primary"><img src="/static/img/icons/right.png"></button>
             </div>
             
             <div class="form-group">
               <label for="eff-sepia">Sepia</label>
-              <input type="checkbox" name="eff-sepia" id="eff-sepia">
+              <input type="checkbox" id="eff-sepia">
               <label for="eff-b-w">B&W</label>
-              <input type="checkbox" name="eff-b-w" id="eff-b-w">
+              <input type="checkbox" id="eff-b-w">
             </div>
             <br>
 
@@ -119,9 +169,15 @@
       </div>
       
       
-      <button id="btn-save" class="btn btn-primary">Pobierz</button>
-            
-
+      <button id="btn-save"  type="button" class="btn btn-primary">Pobierz</button>
+      {% if user.is_authenticated and karta.user == user %}
+      <input type="submit" id="btn-post" value="Zapisz" class="btn btn-primary">      
+      {% endif %}
+      {% if user.is_authenticated and karta == None %}
+      <input type="submit" id="btn-post" value="Zapisz" class="btn btn-primary">      
+      {% endif %}
+      
+      </form>
     </div>
     
     
@@ -142,6 +198,10 @@
    
   </div>
 </div>
+
+<div id="dlg-check-title" title="Wyszukiwanie nazwy karty">
+  <p id="check-title-results"></p>
+</div>
   
   <script>
     var picture = '';
@@ -151,7 +211,7 @@
       $("#title").val('{{ karta.nazwa|title }}');
       $("#type").val('{{ karta.typ|title }}');
       $("#encounter_nr").val('{{ karta.nr_spotkania }}');
-      $("#text").val('{{ karta.opis|new_lines }}');
+      $("#text").val('{{ karta.opis|new_lines|safe }}');
       picture = "{{ karta.picture }}";
       if (!(picture == "")) {
         picture = "{{  karta.id }}/"+picture;

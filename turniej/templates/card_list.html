@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<ul>
+{% for card in cards %}<li><a href="/{{ card.layout.element.game }}/{{ card.id }}/">{{ card.nazwa }}</a></li>{% endfor %}
+</ul>
+
+<a href="/Talisman/"><button id="btn-new" class="btn btn-primary">Nowa karta</button></a
+
+{% endblock %}

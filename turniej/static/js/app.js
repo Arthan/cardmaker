@@ -112,7 +112,7 @@ Phaser.Text.prototype.updateLine = function (line, x, y) {
 function setLayout(name) {
   for (var i in layouts) {
     if (layouts[i].name == name) {
-      $("#layer").val(i);
+      $("#layout").val(layouts[i].id);
       break;
     }
   }
@@ -120,9 +120,9 @@ function setLayout(name) {
 
 function setLayoutVisible(idx, visible) {
   if (visible) {
-    $('#layer option[value="'+idx+'"]').show();
+    $('#layout option[value="'+idx+'"]').show();
   } else {
-    $('#layer option[value="'+idx+'"]').hide();
+    $('#layout option[value="'+idx+'"]').hide();
   }
 }
 
@@ -133,7 +133,7 @@ function refreshLayoutList() {
     if (exp_id > 0) {
       in_exp = layouts[i].expansions.indexOf(exp_id) > -1;
     }    
-    setLayoutVisible(i, in_exp);
+    setLayoutVisible(layouts[i].id, in_exp);
   }
 }
 
@@ -146,9 +146,17 @@ function refreshCard() {
   refreshExpSymbol();
   game.debug_mode = $("#debug-mode").prop('checked');
 };
+
+function getLayout(id) {
+  for (var i in layouts) {
+    if (layouts[i].id == id) {
+      return layouts[i];
+    }
+  }
+}
     
 function refreshLayout() {
-  curr_layout = layouts[parseInt($("#layer").val())];
+  curr_layout = getLayout(parseInt($("#layout").val()));
   layout_url = '/static/img/layouts/Talisman/'+curr_layout.name+'/';
   game.scale.setGameSize(curr_layout.w, curr_layout.h);
   game.card.x = game.width/2;
@@ -161,7 +169,7 @@ function refreshLayout() {
   
   $("#back").css({'width': curr_layout.w+'px', 'height': curr_layout.h+'px'})
   
-  $("#layer").css('background-image', 'url(' + layout_url + 'back_24.png)');
+  $("#layout").css('background-image', 'url(' + layout_url + 'back_24.png)');
   
   if (curr_layout.long_txt) {
     game.card.loadTexture(curr_layout.name+'-front-'+layout_type);
@@ -175,6 +183,7 @@ function refreshLayout() {
     $("#back").css('background-image', 'url(' + layout_url + 'back.png)');
   }
   
+  game.no_enc_nr.visible = curr_layout.name == 'adventure' && $("#encounter_nr").val() == '';
   game.txtEncounter.visible = (curr_layout.en_nr);
   game.txtType.visible = (curr_layout.type_txt);
  
@@ -186,14 +195,26 @@ function refreshLayout() {
   refreshExpSymbol();
 };
 
+function capitalize(txt) {
+  var parts = txt.split(' ');
+  $.each(parts, function (key, value) {
+      parts[key] = value.charAt(0).toUpperCase() + value.slice(1);
+  });  
+  return parts.join(' ');
+}
+
 function refreshTitle() {
   var new_title = $("#title").val();
+  new_title = capitalize(new_title);
+  $("#title").val(new_title);
   game.txtTitle.setText(new_title);
   game.CalcFontSize(game.txtTitle, game.title_region, game.title_font_size_max);
 };
 
 function refreshType() {
   var new_type = $("#type").val();
+  new_type = capitalize(new_type);
+  $("#type").val(new_type);
   game.txtType.setText(new_type);
   game.CalcFontSize(game.txtType, game.type_region, game.type_font_size_max);
 };
@@ -204,7 +225,14 @@ function refreshExpSymbol() {
     game.exp_sym.visible = false;
     game.exp_icon.visible = false;    
   } else {
-    game.exp_sym.visible = true;
+    if (curr_layout.exp_sym_bg == null) {
+      game.exp_sym.visible = false;
+    } else {
+      game.exp_sym.loadTexture('exp_sym_'+curr_layout.exp_sym_bg);
+      game.exp_sym.visible = true;
+    }
+    
+    
     game.exp_icon.visible = true;    
     game.exp_icon.loadTexture('exp_icon_'+exp_sym);
     var ratio = game.exp_icon.width / game.exp_icon.height;
@@ -325,18 +353,19 @@ function refreshText() {
 function refreshEncounterNr() {
   var nr = $("#encounter_nr").val();
   game.txtEncounter.setText(nr);
+  game.no_enc_nr.visible = curr_layout.name == 'adventure' && nr == '';
   game.CalcFontSize(game.txtEncounter, game.encounter_region, game.encounter_font_size_max);
 };
 
 
 var blackWhite = function(r, g, b, a) {
   var avg = 0.3  * r + 0.59 * g + 0.11 * b;
-  return [avg, avg, avg, 255];
+  return [avg, avg, avg, a];
 }
 
 var sepia = function(r, g, b, a) {
   var avg = 0.3  * r + 0.59 * g + 0.11 * b;
-  return [avg + 100, avg + 50, avg + 0, 255]; // 100, 50, 0
+  return [avg + 100, avg + 50, avg + 0, a]; // 100, 50, 0
 }
 
 function showPicture(img, effect=null, resize=true) {
@@ -347,7 +376,6 @@ function showPicture(img, effect=null, resize=true) {
   
   //game.picture.width = img.width;
   //game.picture.height = img.height;
-  
   var bmd = game.add.bitmapData(img.width, img.height);
   bmd.ctx.drawImage(img, 0, 0);
   
@@ -455,7 +483,7 @@ window.onload = function() {
 
   // wypelnianie listy z szablonami
   for (i in layouts) {
-    $('#layer').append('<option value="'+i+'" style="background-image:url(/static/img/layouts/Talisman/' + 
+    $('#layout').append('<option value="'+layouts[i].id+'" style="background-image:url(/static/img/layouts/Talisman/' + 
       layouts[i].name + '/back_24.png);">' + layouts[i].caption + '</option>');
   }  
 
@@ -481,7 +509,7 @@ window.onload = function() {
     refreshEncounterNr();
   });
 
-  $('#layer').on('change',function(e){
+  $('#layout').on('change',function(e){
     refreshLayout();
   });
 
@@ -498,6 +526,14 @@ window.onload = function() {
     //var image = game.canvas.toDataURL("image/png");
     //window.location.href = image;
     Canvas2Image.saveAsPNG(game.canvas, curr_layout.w, curr_layout.h, "card");
+  });
+
+  $("#btn-post").click(function(){
+    var new_title = $("#title").val();
+    if (new_title == '') {
+      alert('Pole "Tytuł" nie może być puste!');
+      return false;
+    }
   });
 
   $("#debug-mode").click(function(){
