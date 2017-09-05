@@ -71,10 +71,21 @@ def generator(request, game_name='Talisman', card_id=''):
             data['karta'].nr_spotkania = request.POST.get("encounter_nr", "")
             
             data['karta'].opis = request.POST.get("text", "")
+            
+            data['karta'].pic_sepia = request.POST.get("eff-sepia", 'off') == 'on'
+            data['karta'].pic_bw = request.POST.get("eff-b-w", 'off') == 'on'
+  
+            data['karta'].pic_scale_x = float(request.POST.get("pic_scale_x", 1.0))
+            data['karta'].pic_scale_y = float(request.POST.get("pic_scale_y", 1.0))
+
+            data['karta'].pic_x = int(request.POST.get("pic_x", 1))
+            data['karta'].pic_y = int(request.POST.get("pic_y", 1))
+  
             if data['karta'].nazwa:
                 data['karta'].save()
                 return redirect('/Talisman/{}/'.format(data['karta'].id))
-  
+
+            
     layouts = []
     db_layouts = Layout.objects.filter(element__game__nazwa=game_name, on_layout_list=True).order_by('caption')
     for db_layout in db_layouts:

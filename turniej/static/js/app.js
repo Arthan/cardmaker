@@ -575,27 +575,35 @@ window.onload = function() {
   $("#btn-expand").click(function(){
     game.picture.scale.x += 0.02;
     game.picture.scale.y += 0.02;
+    $("#pic_scale_x").val(game.picture.scale.x);
+    $("#pic_scale_y").val(game.picture.scale.y);
   });
 
   $("#btn-collapse").click(function(){
     game.picture.scale.x -= 0.02;
     game.picture.scale.y -= 0.02;
+    $("#pic_scale_x").val(game.picture.scale.x);
+    $("#pic_scale_y").val(game.picture.scale.y);
   });
 
   $("#btn-move-up").click(function(){
     game.picture.y -= 10;
+    $("#pic_y").val(game.picture.y);
   });
 
   $("#btn-move-down").click(function(){
     game.picture.y += 10;
+    $("#pic_y").val(game.picture.y);
   });
 
   $("#btn-move-left").click(function(){
     game.picture.x -= 10;
+    $("#pic_x").val(game.picture.x);
   });
 
   $("#btn-move-right").click(function(){
     game.picture.x += 10;
+    $("#pic_x").val(game.picture.x);
   });
 
   /*switch (talia) {

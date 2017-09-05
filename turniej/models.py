@@ -65,7 +65,10 @@ class KartaNowa(models.Model):
     picture = models.CharField(max_length=250, null=True, blank=True)
     pic_x = models.IntegerField(default=0)
     pic_y = models.IntegerField(default=0)
-    pic_scale = models.FloatField(default=1.0)
+    pic_scale_x = models.FloatField(default=1.0)
+    pic_scale_y = models.FloatField(default=1.0)
+    pic_sepia = models.BooleanField(default=False)
+    pic_bw = models.BooleanField(default=False)
     user = models.ForeignKey(User)
     def __unicode__(self):
         return self.nazwa

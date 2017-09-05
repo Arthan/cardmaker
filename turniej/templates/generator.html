@@ -1,4 +1,5 @@
 {% load new_lines %}
+{% load apostrof %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,7 +64,7 @@
   <div class="row">
     <div id="header">
       <ul>
-        <li><img src="/static/img/icons/card_32.png"></li>
+        <li><a href="/"><img src="/static/img/icons/card_32.png"></a></li>
         <li id="hdr-title">Generator Kart</li>
         {% if user.is_authenticated %}
         <li class="rightside"><a href="/logout/">Wyloguj</a></li>
@@ -125,7 +126,12 @@
             <div class="form-group">
               <label for="image">Ilustracja:</label>  
               <input type="file" name="image" id="image" class="form-control" onchange="readImage(this, 'blah');">
-              <img id="blah" class="hidden" src="#"/>
+              {% if karta.picture %}
+              <img id="blah" class="hidden" src="/static/cards/{{  karta.id }}/{{ karta.picture }}"/>
+              {% else %}
+              <img id="blah" class="hidden" src=""/>
+              {% endif %}
+              
             </div>
             
             <div class="form-group">
@@ -135,13 +141,17 @@
               <button id="btn-move-down" type="button" class="btn btn-primary"><img src="/static/img/icons/down.png"></button>
               <button id="btn-move-left" type="button" class="btn btn-primary"><img src="/static/img/icons/left.png"></button>
               <button id="btn-move-right" type="button" class="btn btn-primary"><img src="/static/img/icons/right.png"></button>
+              <input type="hidden" id="pic_x" name="pic_x" value="0" />
+              <input type="hidden" id="pic_y" name="pic_y" value="0" />
+              <input type="hidden" id="pic_scale_x" name="pic_scale_x" value="1.0" />
+              <input type="hidden" id="pic_scale_y" name="pic_scale_y" value="1.0" />
             </div>
             
             <div class="form-group">
               <label for="eff-sepia">Sepia</label>
-              <input type="checkbox" id="eff-sepia">
+              <input type="checkbox" id="eff-sepia" name="eff-sepia">
               <label for="eff-b-w">B&W</label>
-              <input type="checkbox" id="eff-b-w">
+              <input type="checkbox" id="eff-b-w" name="eff-b-w">
             </div>
             <br>
 
@@ -208,10 +218,10 @@
     var pic_effect = null;
     
     {% if karta %}
-      $("#title").val('{{ karta.nazwa|title }}');
-      $("#type").val('{{ karta.typ|title }}');
-      $("#encounter_nr").val('{{ karta.nr_spotkania }}');
-      $("#text").val('{{ karta.opis|new_lines|safe }}');
+      $("#title").val('{{ karta.nazwa|new_lines|apostrof|safe }}');
+      $("#type").val('{{ karta.typ|new_lines|apostrof|safe }}');
+      $("#encounter_nr").val('{{ karta.nr_spotkania|apostrof|safe }}');
+      $("#text").val('{{ karta.opis|new_lines|apostrof|safe }}');
       picture = "{{ karta.picture }}";
       if (!(picture == "")) {
         picture = "{{  karta.id }}/"+picture;
@@ -219,11 +229,19 @@
       var layout_to_set = "{{ karta.layout.name }}";
       var pic_x = {{ karta.pic_x }};
       var pic_y = {{ karta.pic_y }};
-      var pic_scale = {{ karta.pic_scale|stringformat:".2f" }};
+      var pic_scale_x = {{ karta.pic_scale_x|stringformat:".2f" }};
+      var pic_scale_y = {{ karta.pic_scale_y|stringformat:".2f" }};
+      $("#pic_x").val(pic_x);
+      $("#pic_y").val(pic_y);
+      $("#pic_scale_x").val(pic_scale_x);
+      $("#pic_scale_y").val(pic_scale_y);
+      $("#eff-sepia").prop('checked', {{ karta.pic_sepia|lower }})
+      $("#eff-b-w").prop('checked', {{ karta.pic_bw|lower }})
     {% else %}
       var pic_x = 0;
       var pic_y = 0;
-      var pic_scale = 1.0;
+      var pic_scale_x = 1.0;
+      var pic_scale_y = 1.0;
       var layout_to_set = null;    
     {% endif %}
     

@@ -156,7 +156,7 @@ class Game {
     
     game.picture.x = pic_x;
     game.picture.y = pic_y;
-    game.picture.scale.setTo(pic_scale);
+    game.picture.scale.setTo(pic_scale_x, pic_scale_y);
   }
 
   update() {

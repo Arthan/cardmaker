@@ -1,10 +1,13 @@
 #-*- coding: utf-8 -*-
+import os
 from openpyxl import load_workbook
 
 
 def find_title(txt, contains=False):
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    filename = os.path.join(BASE_DIR, 'utils', 'nazwy kart.xlsx')
     txt = txt.lower()
-    wb = load_workbook(filename='nazwy kart.xlsx', read_only=True)
+    wb = load_workbook(filename=filename, read_only=True)
     
     ws = wb.active
     
