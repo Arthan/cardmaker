@@ -1,10 +1,11 @@
+{% load i18n %}
 {% load new_lines %}
 {% load apostrof %}
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Generator kart</title>
+  <title>{% trans "Generator Kart" %}</title>
   <link rel="shortcut icon" href="/static/img/icons/card_32.png">
   <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui.min.css">
@@ -13,6 +14,7 @@
 
   <script src="/static/js/jquery-3.2.1.min.js"></script>
   <script src="/static/js/jquery-ui.min.js"></script>
+  <script src="/static/js/hermite.js"></script>
 
   <script>
     $( function() {
@@ -33,7 +35,7 @@
       $(":checkbox").checkboxradio();
       $("#params").removeClass('hidden');
       $( "#btn-check-title" ).button().on( "click", function() {
-        $("#check-title-results").html("szukam ...");
+        $("#check-title-results").html("{% trans "szukam ..." %}");
         $("#dlg-check-title").dialog( "open" );
         var title = $("#title").val();
         $.getJSON( "/check_title/?title="+title, function( data ) {
@@ -48,7 +50,7 @@
               html: items.join( "" )
             }).appendTo( "#check-title-results" );
           } else {
-            $("#check-title-results").html("Nie znaleziono kart o takim tytule.");
+            $("#check-title-results").html("{% trans "Nie znaleziono kart o takim tytule." %}");
           }
           
         });
@@ -65,14 +67,16 @@
     <div id="header">
       <ul>
         <li><a href="/"><img src="/static/img/icons/card_32.png"></a></li>
-        <li id="hdr-title">Generator Kart</li>
+        <li id="hdr-title">{% trans "Generator Kart" %}</li>
         {% if user.is_authenticated %}
-        <li class="rightside"><a href="/logout/">Wyloguj</a></li>
-        <li class="rightside"><a href="/list/">Moje karty</a></li>
+        <li class="rightside"><a href="/logout/">{% trans "Wyloguj" %}</a></li>
+        <li class="rightside"><a href="/list/">{% trans "Moje karty" %}</a></li>
         {% else %}
-        <li class="rightside"><a href="/signup/">Zarejestruj się</a></li>
-        <li class="rightside"><a href="/login/">Zaloguj</a></li>
+        <li class="rightside"><a href="/signup/">{% trans "Zarejestruj się" %}</a></li>
+        <li class="rightside"><a href="/login/">{% trans "Zaloguj" %}</a></li>
         {% endif %}
+        <li class="rightside"><button type="button" id="btn-lang-en" class="btn btn-primary">EN</button></li>
+        <li class="rightside"><button type="button" id="btn-lang-pl" class="btn btn-primary">PL</button></li>
       </ul>
     </div>
     
@@ -82,49 +86,49 @@
       {% csrf_token %}
       <div id="params" class="hidden">
         <ul>
-          <li><a href="#tabs-1">Szablon</a></li>
-          <li><a href="#tabs-2">Tekst</a></li>
-          <li><a href="#tabs-3">Grafika</a></li>
+          <li><a href="#tabs-1">{% trans "Szablon" %}</a></li>
+          <li><a href="#tabs-2">{% trans "Tekst" %}</a></li>
+          <li><a href="#tabs-3">{% trans "Grafika" %}</a></li>
         </ul>
         <div id="tabs-1">
             <div class="form-group">
-              <label for="expansion">z dodatku:</label>
+              <label for="expansion">{% trans "z dodatku:" %}</label>
               <select id="expansion" class="form-control" >
               </select>
             </div>
             
             <div class="form-group">
-              <label for="layout">Szablon Karty:</label>
+              <label for="layout">{% trans "Szablon Karty:" %}</label>
               <select name="layout" id="layout" class="form-control" >
               </select>
             </div>  
         </div>
         <div id="tabs-2">
             <div class="form-group">
-              <label for="title">Nazwa Karty:</label>
+              <label for="title">{% trans "Nazwa Karty:" %}</label>
               <input name="title" id="title" class="form-control" type="text" value=""/>
-              <button type="button" id="btn-check-title" class="btn">Sprawdź unikalność nazwy</button>
+              <button type="button" id="btn-check-title" class="btn">{% trans "Sprawdź unikalność nazwy" %}</button>
             </div>
             
             <div class="form-group">
-              <label for="type">Typ Karty:</label>
+              <label for="type">{% trans "Typ Karty:" %}</label>
               <input name="type" id="type" class="form-control" type="text" value="">              
             </div>
             
             <div class="form-group">
-              <label for="encounter_nr">Numer spotkania:</label>  
+              <label for="encounter_nr">{% trans "Numer spotkania:" %}</label>  
               <input name="encounter_nr" id="encounter_nr" maxlength="1" class="form-control" type="text" value=""/>
             </div>
             
             <div class="form-group">
-              <label for="text">Treść:</label>  
+              <label for="text">{% trans "Treść:" %}</label>  
               <textarea name="text" id="text" class="form-control"></textarea>
             </div>
         </div>
         <div id="tabs-3">
        
             <div class="form-group">
-              <label for="image">Ilustracja:</label>  
+              <label for="image">{% trans "Ilustracja:" %}</label>  
               <input type="file" name="image" id="image" class="form-control" onchange="readImage(this, 'blah');">
               {% if karta.picture %}
               <img id="blah" class="hidden" src="/static/cards/{{  karta.id }}/{{ karta.picture }}"/>
@@ -156,7 +160,7 @@
             <br>
 
             <div class="form-group">
-            <label for="exp-symbol">Symbol dodatku:</label>
+            <label for="exp-symbol">{% trans "Symbol dodatku:" %}</label>
               <select name="exp-symbol" id="exp-symbol" class="form-control">
                 <option value="1">Anchor</option>
                 <option value="2">Sunrise</option>
@@ -164,9 +168,9 @@
             </div>
             
             <div class="form-group">
-              <label for="exp-icon">Własna grafika dodatku:</label>  
+              <label for="exp-icon">{% trans "Własna grafika dodatku:" %}</label>  
               <input type="file" name="exp-icon" id="exp-icon" class="form-control" onchange="readImage(this, 'exp-image');">
-              <img id="exp-image" class="hidden" src="#"/>
+              <img id="exp-image" class="show" src="#"/>
             </div>
             
         </div>
@@ -179,12 +183,12 @@
       </div>
       
       
-      <button id="btn-save"  type="button" class="btn btn-primary">Pobierz</button>
+      <button id="btn-save"  type="button" class="btn btn-primary">{% trans "Pobierz" %}</button>
       {% if user.is_authenticated and karta.user == user %}
-      <input type="submit" id="btn-post" value="Zapisz" class="btn btn-primary">      
+      <input type="submit" id="btn-post" value="{% trans "Zapisz" %}" class="btn btn-primary">      
       {% endif %}
       {% if user.is_authenticated and karta == None %}
-      <input type="submit" id="btn-post" value="Zapisz" class="btn btn-primary">      
+      <input type="submit" id="btn-post" value="{% trans "Zapisz" %}" class="btn btn-primary">      
       {% endif %}
       
       </form>
@@ -193,8 +197,8 @@
     
     <div class="col-sm-6" style="text-align:center">
       <div id="card-flip-buttons">
-        <button id="btn-front" class="btn btn-primary">Przód</button>
-        <button id="btn-back" class="btn btn-primary">Tył</button>
+        <button id="btn-front" class="btn btn-primary">{% trans "Przód" %}</button>
+        <button id="btn-back" class="btn btn-primary">{% trans "Tył" %}</button>
       </div>
       <div class="flip-container">
         <div class="flipper">
@@ -264,8 +268,23 @@
       source: defaultTypes,
       close: function( event, ui ) { refreshType(); }
     });
+
     
-    
+    function changeLang(lang) {
+      $.post( "/lang/setlang/", { "language": lang, "csrfmiddlewaretoken": "{{ csrf_token }}"}, function( data ) {
+        location.reload();
+      });
+    }
+  
+    $(function() {
+      $( "#btn-lang-en" ).click(function( event ) {
+        changeLang("en");
+      });
+      
+      $( "#btn-lang-pl" ).click(function( event ) {
+        changeLang("pl");        
+      });
+    });    
   </script>
     
   <script src="/static/js/phaser.min.js"></script>

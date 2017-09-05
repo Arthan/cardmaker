@@ -1,12 +1,15 @@
-{% load new_lines %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Generator</title>
+  <title>{% trans "Generator kart" %}</title>
+  <link rel="shortcut icon" href="/static/img/icons/card_32.png">
   <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui.min.css">
   <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+  {% block csses %}
+  {% endblock %}
 
 
   <script src="/static/js/jquery-3.2.1.min.js"></script>
@@ -22,15 +25,36 @@
     <div id="header">
       <ul>
         <li><a href="/"><img src="/static/img/icons/card_32.png"></a></li>
-        <li id="hdr-title">Generator Kart</li>
+        <li id="hdr-title">{% trans "Generator Kart" %}</li>
         {% if user.is_authenticated %}
-        <li class="rightside"><a href="/logout/">Wyloguj</a></li>
+        <li class="rightside"><a href="/logout/">{% trans "Wyloguj" %}</a></li>
+        <li class="rightside"><a href="/list/">{% trans "Moje karty" %}</a></li>
         {% else %}
-        <li class="rightside"><a href="/signup/">Zarejestruj się</a></li>
-        <li class="rightside"><a href="/login/">Zaloguj</a></li>
+        <li class="rightside"><a href="/signup/">{% trans "Zarejestruj się" %}</a></li>
+        <li class="rightside"><a href="/login/">{% trans "Zaloguj" %}</a></li>
         {% endif %}
+        <li class="rightside"><button type="button" id="btn-lang-en" class="btn btn-primary">EN</button></li>
+        <li class="rightside"><button type="button" id="btn-lang-pl" class="btn btn-primary">PL</button></li>
       </ul>
     </div>
+
+  <script>
+    function changeLang(lang) {
+      $.post( "/lang/setlang/", { "language": lang, "csrfmiddlewaretoken": "{{ csrf_token }}"}, function( data ) {
+        location.reload();
+      });
+    }
+  
+    $(function() {
+      $( "#btn-lang-en" ).click(function( event ) {
+        changeLang("en");
+      });
+      
+      $( "#btn-lang-pl" ).click(function( event ) {
+        changeLang("pl");        
+      });
+    });
+  </script>
 
 {% block content %}
 {% endblock %}

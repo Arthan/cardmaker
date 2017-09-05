@@ -62,7 +62,7 @@ class KartaNowa(models.Model):
     typ = models.CharField(max_length=50, default='', blank=True)
     nr_spotkania = models.CharField(max_length=1, default='', blank=True)
     opis = models.TextField(default='', blank=True)
-    picture = models.CharField(max_length=250, null=True, blank=True)
+    picture = models.CharField(max_length=250, blank=True, default='')
     pic_x = models.IntegerField(default=0)
     pic_y = models.IntegerField(default=0)
     pic_scale_x = models.FloatField(default=1.0)

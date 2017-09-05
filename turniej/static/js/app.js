@@ -363,6 +363,15 @@ var blackWhite = function(r, g, b, a) {
   return [avg, avg, avg, a];
 }
 
+var removeWhite = function(r, g, b, a) {
+  var avg = (r + g + b) / 3;
+  if (avg > 100) {
+    return [255, 255, 255, 0];
+  } else {
+    return [r, g, b, a];
+  }  
+}
+
 var sepia = function(r, g, b, a) {
   var avg = 0.3  * r + 0.59 * g + 0.11 * b;
   return [avg + 100, avg + 50, avg + 0, a]; // 100, 50, 0
@@ -419,6 +428,9 @@ img_symbol.addEventListener('load', function() {
   
   //game.picture.width = img.width;
   //game.picture.height = img.height;
+
+  var HERMITE = new Hermite_class();
+  HERMITE.resize_image('exp-image', 28, 28);
   
   var bmd = game.add.bitmapData(img_symbol.width, img_symbol.height);
   bmd.ctx.drawImage(img_symbol, 0, 0);

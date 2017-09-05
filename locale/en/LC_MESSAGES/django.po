@@ -1,0 +1,144 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-05 22:29+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .\mim_turniej\settings.py:138
+msgid "Polski"
+msgstr "Polish"
+
+#: .\mim_turniej\settings.py:139
+msgid "Angielski"
+msgstr "English"
+
+#: .\turniej\templates\base.html:6
+msgid "Generator kart"
+msgstr "Card Generator"
+
+#: .\turniej\templates\base.html:28 .\turniej\templates\generator.html:8
+#: .\turniej\templates\generator.html:70
+msgid "Generator Kart"
+msgstr "Card Generator"
+
+#: .\turniej\templates\base.html:30 .\turniej\templates\generator.html:72
+msgid "Wyloguj"
+msgstr "Logout"
+
+#: .\turniej\templates\base.html:31 .\turniej\templates\generator.html:73
+msgid "Moje karty"
+msgstr "My Cards"
+
+#: .\turniej\templates\base.html:33 .\turniej\templates\generator.html:75
+msgid "Zarejestruj się"
+msgstr "Signup"
+
+#: .\turniej\templates\base.html:34 .\turniej\templates\generator.html:76
+msgid "Zaloguj"
+msgstr "Login"
+
+#: .\turniej\templates\card_list.html:15
+msgid "Nowa karta"
+msgstr "New card"
+
+#: .\turniej\templates\card_list.html:16
+msgid "Importuj z Strange Eons"
+msgstr "Import from Strange Eons"
+
+#: .\turniej\templates\generator.html:38
+msgid "szukam ..."
+msgstr "serching ..."
+
+#: .\turniej\templates\generator.html:53
+msgid "Nie znaleziono kart o takim tytule."
+msgstr "Not found cards with this title."
+
+#: .\turniej\templates\generator.html:89
+msgid "Szablon"
+msgstr "Layout"
+
+#: .\turniej\templates\generator.html:90
+msgid "Tekst"
+msgstr "Text"
+
+#: .\turniej\templates\generator.html:91
+msgid "Grafika"
+msgstr "Graphic"
+
+#: .\turniej\templates\generator.html:95
+msgid "z dodatku:"
+msgstr "from expansion:"
+
+#: .\turniej\templates\generator.html:101
+msgid "Szablon Karty:"
+msgstr "Card Layout:"
+
+#: .\turniej\templates\generator.html:108
+msgid "Nazwa Karty:"
+msgstr "Card Name:"
+
+#: .\turniej\templates\generator.html:110
+msgid "Sprawdź unikalność nazwy"
+msgstr "Check the uniqueness of the name"
+
+#: .\turniej\templates\generator.html:114
+msgid "Typ Karty:"
+msgstr "Card Type:"
+
+#: .\turniej\templates\generator.html:119
+msgid "Numer spotkania:"
+msgstr "Encounter number:"
+
+#: .\turniej\templates\generator.html:124
+msgid "Treść:"
+msgstr "Text:"
+
+#: .\turniej\templates\generator.html:131
+msgid "Ilustracja:"
+msgstr "Image:"
+
+#: .\turniej\templates\generator.html:163
+msgid "Symbol dodatku:"
+msgstr "Expansion icon:"
+
+#: .\turniej\templates\generator.html:171
+msgid "Własna grafika dodatku:"
+msgstr "Expansion image:"
+
+#: .\turniej\templates\generator.html:186
+msgid "Pobierz"
+msgstr "Download"
+
+#: .\turniej\templates\generator.html:188
+#: .\turniej\templates\generator.html:191
+msgid "Zapisz"
+msgstr "Save"
+
+#: .\turniej\templates\generator.html:200
+msgid "Przód"
+msgstr "Front"
+
+#: .\turniej\templates\generator.html:201
+msgid "Tył"
+msgstr "Back"
+
+#: .\turniej\templates\image_list.html:21
+msgid "Nieoficjalne"
+msgstr "Unofficial"
+
+#: .\turniej\templates\image_list.html:33
+msgid "Oficjalne"
+msgstr "Official"

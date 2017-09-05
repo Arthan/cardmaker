@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -17,7 +18,7 @@
   <body>
     <div class="page-content">
 
-    <h1>Nieoficjalne</h1>
+    <h1>{% trans "Nieoficjalne" %}</h1>
       <div class="row covers">
       {% for image in images %}
         <div class="cover">
@@ -29,7 +30,7 @@
       {% endfor %}
       </div>
 
-      <h1>Oficjalne</h1>
+      <h1>{% trans "Oficjalne" %}</h1>
       <div class="row covers">
       {% for image in images_official %}
         <div class="cover">

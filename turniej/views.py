@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
+import os
+from os.path import join, dirname, abspath, basename, splitext
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, render, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse 
 from utils.find_title import find_title
+from utils.eon_mod import EonMod
 from .models import *
 import json
 
@@ -151,3 +155,42 @@ def card_list(request):
         cards = []
     data = {'cards': cards}
     return render(request, 'card_list.html', data)
+
+def handle_uploaded_file(request, f):
+    base_folder = dirname(dirname(abspath(__file__)))
+    folder = join(base_folder, 'static', 'cards')
+    filename = join(folder, f.name)
+    print filename
+    with open(filename, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
+    eon = EonMod(filename)
+    #print eon.nazwa
+    if eon.nazwa:
+        karta = KartaNowa(user=request.user)
+        folder = join(base_folder, 'static', 'cards', str(karta.id))
+        #print folder 
+        os.makedirs(folder)
+        
+        img_filename = splitext(basename(eon.obraz_sciezka))[0] + '.png'
+        eon.save_img(join(folder, img_filename))
+        karta.layout = Layout.objects.get(name='adventure')
+        karta.picture = img_filename
+        
+        karta.nazwa = eon.nazwa
+        karta.typ = eon.typ
+        karta.nr_spotkania = eon.nr_spotkania
+        karta.opis = eon.efekt
+        karta.save()
+        
+        os.rename(filename, join(folder, f.name))
+        return karta.id
+    return 0
+
+@login_required
+def import_eon(request):
+    if request.method == 'POST':
+        id_karty = handle_uploaded_file(request, request.FILES['file'])
+        return HttpResponse('ok')
+    return HttpResponse('fail')

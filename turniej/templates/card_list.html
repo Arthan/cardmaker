@@ -1,11 +1,61 @@
 {% extends "base.html" %}
+{% load i18n %}
+
+{% block csses %}
+  <link href="/static/css/dropzone.css" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
+  <script src="/static/js/dropzone.js"></script>
+  
+  <ul>
+  {% for card in cards %}<li><a href="/{{ card.layout.element.game }}/{{ card.id }}/">{{ card.nazwa }}</a></li>{% endfor %}
+  </ul>
 
-<ul>
-{% for card in cards %}<li><a href="/{{ card.layout.element.game }}/{{ card.id }}/">{{ card.nazwa }}</a></li>{% endfor %}
-</ul>
+  <a href="/Talisman/"><button id="btn-new" class="btn btn-primary">{% trans "Nowa karta" %}</button></a>
+  <button id="btn-import-eon" class="btn btn-primary">{% trans "Importuj z Strange Eons" %}</button>
 
-<a href="/Talisman/"><button id="btn-new" class="btn btn-primary">Nowa karta</button></a
+  <div class="dialog" id="dialog_card_add">
+    <form action="/import_eon/" class="dropzone" id="eon_uploader">
+      {% csrf_token %}
+    </form>
+  </div>
 
+  <script>
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone("#eon_uploader", {
+      maxFiles: 1,
+      acceptedFiles: ".eon"
+    });
+    myDropzone.on("complete", function(file) {
+      $("#dialog_card_add").dialog( "close" );
+    });
+      
+    $(function() {
+    
+      $( "#dialog_card_add" ).dialog({
+        dialogClass: 'noTitle',
+        autoOpen: false,
+        resizable: false,
+        height: 340,
+        width: 340,
+        modal: true,
+        close: function( event, ui ) {
+            Dropzone.forElement("#eon_uploader").removeAllFiles(true);
+        },
+        buttons: {
+          Close: function() {
+            $( this ).dialog( "close" );
+          }
+        }
+      });
+      
+      $( "#btn-import-eon" ).click(function( event ) {
+          $("#dialog_card_add").dialog( "open" );
+        });
+    
+        
+    });
+  </script>
+  
 {% endblock %}
